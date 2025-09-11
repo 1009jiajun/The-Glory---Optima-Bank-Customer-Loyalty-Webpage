@@ -27,6 +27,41 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Firebase App (core SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <style>
+  /* change .toast to .custom-toast */
+  .custom-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0.95;
+    animation: fadeInOut 3s forwards;
+  }
+  .custom-toast.success {
+    background-color: #28a745; /* green */
+  }
+  .custom-toast.error {
+    background-color: #dc3545; /* red */
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    10%, 90% { opacity: 0.95; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+  }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -56,7 +91,7 @@
 
             <!-- Account -->
             <div class="dropdown account-dropdown">
-              <button class="header-action-btn" data-bs-toggle="dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown" id="accountBtn">
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
@@ -78,7 +113,7 @@
                     <span>My Points Balance</span>
                   </a>
                 </div>
-                <div class="dropdown-footer">
+                <div class="dropdown-footer" id="authButtons">
                   <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
                   <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
                 </div>
@@ -548,6 +583,105 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Firebase Initialization and Auth State Management -->
+  <script type="module">
+
+  // 🔹 Reusable Toast Function
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+  import firebaseConfig from "./config.js";   // ✅ import the config
+
+  // 🔹 Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const authButtons = document.getElementById("authButtons");
+
+  // 🔹 Listen for login state changes
+onAuthStateChanged(auth, (user) => {
+  const accountBtn = document.getElementById("accountBtn");
+
+  if (user) {
+  fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
+    .then((res) => res.json())
+    .then((dbUser) => {
+      let photoURL = dbUser.profile_image;
+
+      // Fallback avatar if empty
+      if (!photoURL) {
+        photoURL = "assets/img/default-avatar.png";
+      }
+
+      accountBtn.innerHTML = `
+        <img src="${photoURL}" 
+              alt="User Avatar" 
+              class="rounded-circle" 
+              style="width:32px; height:32px; object-fit:cover;">
+      `;
+    });
+
+    document.querySelector(".dropdown-header h6").textContent =
+      `Welcome ${user.displayName}`;
+    
+    authButtons.innerHTML = `
+      <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+
+        // refresh page to update UI
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      } catch (err) {
+        showToast("Logout failed: " + err.message, "error");
+        console.error("Logout error", err);
+      }
+    });
+  } else {
+    document.querySelector(".dropdown-header h6").textContent =
+      `Welcome to Optima Bank`;
+
+    authButtons.innerHTML = `
+      <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
+      <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
+    `;
+  }
+});
+</script>
+<script>
+// 🔹 Reusable toast function
+function showToast(message, type = "success") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+
+  // Add to DOM
+  document.body.appendChild(toast);
+
+  // Remove after animation (3s)
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+</script>
+
 
 </body>
 

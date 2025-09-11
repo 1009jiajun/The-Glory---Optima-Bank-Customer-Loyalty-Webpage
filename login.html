@@ -27,6 +27,40 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
+
+    <style>
+  /* change .toast to .custom-toast */
+  .custom-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0.95;
+    animation: fadeInOut 3s forwards;
+  }
+  .custom-toast.success {
+    background-color: #28a745; /* green */
+  }
+  .custom-toast.error {
+    background-color: #dc3545; /* red */
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    10%, 90% { opacity: 0.95; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+  }
+
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -174,7 +208,7 @@
                     <span>or</span>
                   </div>
 
-                  <button type="button" class="auth-btn social-btn">
+                  <button type="button" class="auth-btn social-btn" id="googleLogin">
                     <i class="bi bi-google"></i>
                     Continue with Google
                   </button>
@@ -382,6 +416,70 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+ 
+  <!-- Firebase Initialization and Google Sign-In Script -->
+  <script type="module">
+
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup } 
+    from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+  import firebaseConfig from "./config.js";   // ✅ import the config
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById("googleLogin").addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const idToken = await user.getIdToken();
+
+      // Send to backend
+      const response = await fetch("http://localhost/TheGlory/saveUser.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: idToken,
+          email: user.email,
+          username: user.displayName,
+          profile_image: user.photoURL,
+          uid: user.uid
+        })
+      });
+
+      const resultOfDBStore = await response.json(); // ✅ parse PHP response
+      console.log(resultOfDBStore);
+
+      if (resultOfDBStore.status === "success") {      
+        showToast("Welcome back, " + user.displayName, "success");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000); // wait 2s before redirect
+        console.log(resultOfDBStore);
+      } else {
+        showToast("DB save failed: " + resultOfDBStore.message, "error");        
+      }
+
+    } catch (err) {
+      console.error(err);
+      showToast("Login failed: " + err.message, "error");
+    }
+  });
+
+</script>
 
 </body>
 
