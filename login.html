@@ -167,7 +167,7 @@
             <div class="auth-container" data-aos="fade-in" data-aos-delay="200">
 
               <!-- Login Form -->
-              <div class="auth-form login-form active">
+              <div class="auth-form login-form active" id="loginForm">
                 <div class="form-header">
                   <h3>Welcome Back</h3>
                   <p>Sign in to your account</p>
@@ -178,14 +178,14 @@
                     <span class="input-icon">
                       <i class="bi bi-envelope"></i>
                     </span>
-                    <input type="email" class="form-control" placeholder="Email address" required="" autocomplete="email">
+                    <input type="email" class="form-control" placeholder="Email address" required="" autocomplete="email" id="loginEmail">
                   </div>
 
                   <div class="input-group mb-3">
                     <span class="input-icon">
                       <i class="bi bi-lock"></i>
                     </span>
-                    <input type="password" class="form-control" placeholder="Password" required="" autocomplete="current-password">
+                    <input type="password" class="form-control" placeholder="Password" required="" autocomplete="current-password" id="loginPassword">
                     <span class="password-toggle">
                       <i class="bi bi-eye"></i>
                     </span>
@@ -215,7 +215,7 @@
 
                   <div class="switch-form">
                     <span>Don't have an account?</span>
-                    <button type="button" class="switch-btn" data-target="register">Create account</button>
+                    <a href="register.html" class="switch-btn">Create account</a>
                   </div>
                 </form>
               </div>
@@ -432,6 +432,42 @@
     }, 3000);
   }
 
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    const response = await fetch("http://localhost/TheGlory/login.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+        // Save session in browser
+      sessionStorage.setItem("user", JSON.stringify({
+        id: result.user_id,
+        username: result.username,
+        email: result.email
+      }));
+      showToast("Welcome back, " + result.username, "success");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
+    } else {
+      showToast(result.message, "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Login failed: " + err.message, "error");
+  }
+});
+
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup } 
     from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
@@ -479,6 +515,50 @@
     }
   });
 
+document.querySelector(".forgot-password").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  if (!email) {
+    showToast("Please enter your email first", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost/TheGlory/forgotPassword.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const result = await response.json();
+    showToast(result.message, result.status);
+  } catch (err) {
+    console.error(err);
+    showToast("Error: " + err.message, "error");
+  }
+});
+
+</script>
+
+
+<script>
+  // Password visibility toggle
+  document.querySelectorAll(".password-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", function () {
+      const input = this.previousElementSibling; // the input before the toggle
+      const icon = this.querySelector("i");
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+      }
+    });
+  });
 </script>
 
 </body>

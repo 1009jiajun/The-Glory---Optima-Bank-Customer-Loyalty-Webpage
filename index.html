@@ -612,31 +612,25 @@
   const authButtons = document.getElementById("authButtons");
 
   // 🔹 Listen for login state changes
+// 🔹 Check Firebase Auth first
 onAuthStateChanged(auth, (user) => {
-  const accountBtn = document.getElementById("accountBtn");
-
   if (user) {
-  fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
-    .then((res) => res.json())
-    .then((dbUser) => {
-      let photoURL = dbUser.profile_image;
-
-      // Fallback avatar if empty
-      if (!photoURL) {
-        photoURL = "assets/img/default-avatar.png";
-      }
-
-      accountBtn.innerHTML = `
-        <img src="${photoURL}" 
-              alt="User Avatar" 
-              class="rounded-circle" 
-              style="width:32px; height:32px; object-fit:cover;">
-      `;
-    });
+    // Firebase user
+    fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
+      .then((res) => res.json())
+      .then((dbUser) => {
+        let photoURL = dbUser.profile_image || "assets/img/default-avatar.png";
+        accountBtn.innerHTML = `
+          <img src="${photoURL}" 
+               alt="User Avatar" 
+               class="rounded-circle" 
+               style="width:32px; height:32px; object-fit:cover;">
+        `;
+      });
 
     document.querySelector(".dropdown-header h6").textContent =
       `Welcome ${user.displayName}`;
-    
+
     authButtons.innerHTML = `
       <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
     `;
@@ -644,23 +638,49 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       try {
         await signOut(auth);
-
-        // refresh page to update UI
+        sessionStorage.removeItem("user"); // clear normal session too
         setTimeout(() => location.reload(), 1500);
         showToast("Logged out successfully", "success");
       } catch (err) {
         showToast("Logout failed: " + err.message, "error");
-        console.error("Logout error", err);
       }
     });
-  } else {
-    document.querySelector(".dropdown-header h6").textContent =
-      `Welcome to Optima Bank`;
 
-    authButtons.innerHTML = `
-      <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
-      <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
-    `;
+  } else {
+    // 🔹 If not Firebase, check normal login session
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    if (localUser) {
+      // Normal user UI update
+      accountBtn.innerHTML = `
+        <img src="assets/img/default-avatar.png"
+             alt="User Avatar"
+             class="rounded-circle"
+             style="width:32px; height:32px; object-fit:cover;">
+      `;
+
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome ${localUser.username}`;
+
+      authButtons.innerHTML = `
+        <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+      `;
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem("user");
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      });
+
+    } else {
+      // Guest
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome to Optima Bank`;
+
+      authButtons.innerHTML = `
+        <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
+        <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
+      `;
+    }
   }
 });
 </script>
