@@ -31,6 +31,27 @@
 
 <body class="index-page">
 
+  <!-- Confirmation Modal -->
+  <div class="modal fade" id="redeemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 12px;">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Redemption</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Your Points Balance:</strong> <span id="userPoints">0</span> pts</p>
+          <p><strong>Voucher:</strong> <span id="voucherTitle"></span></p>
+          <p><strong>Required Points:</strong> <span id="voucherPoints"></span> pts</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmRedeemBtn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <header id="header" class="header sticky-top">
 
     <!-- Main Header -->
@@ -56,7 +77,7 @@
 
             <!-- Account -->
             <div class="dropdown account-dropdown">
-              <button class="header-action-btn" data-bs-toggle="dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown" id="accountBtn">
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
@@ -78,7 +99,7 @@
                     <span>My Points Balance</span>
                   </a>
                 </div>
-                <div class="dropdown-footer">
+                <div class="dropdown-footer" id="authButtons">
                   <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
                   <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
                 </div>
@@ -96,12 +117,16 @@
     <!-- Navigation -->
     <div class="header-nav">
       <div class="container-fluid container-xl position-relative">
-        <nav id="navmenu" class="navmenu">
+        <nav id="navmenu" class="navmenu" style="display: flex; align-items: center; justify-content: space-between;">
           <ul>
             <li><a href="index.html" >Home</a></li>
             <li><a href="category.html" class="active">Vouchers</a></li>
             <li><a href="cart.html">Cart</a></li>
+            <li><a href="account.html">Account</a></li> 
           </ul>
+          <div class="header-nav-points" style="display: none;">
+            <h4 class="current-points" style="font-size: 14px; font-weight: 600; color: white; margin: 15px 0;">Current Points: <span id="currentPoints">0</span></h4>
+          </div>
         </nav>
       </div>
     </div>
@@ -544,7 +569,7 @@
                     <a href="voucher-details.html?id=${v.id}" class="btn btn-outline-custom w-100">View Details</a>
                   </div>
                   <div class="col-6">
-                    <a href="redeem.html?id=${v.id}" class="btn btn-custom w-100">Redeem Now</a>
+                    <a href="#" class="btn btn-custom w-100 btn-redeem" data-id="${v.id}" data-title="${v.title}" data-points="${v.points}" data-action="redeem">Redeem Now</a>
                   </div>
                 </div>
               </div>
@@ -720,6 +745,11 @@
   <script>
     let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
     document.querySelector(".header-action-btn .badge").textContent = cartQty;
+
+    let PointsBalance = JSON.parse(sessionStorage.getItem("user"))?.points || 0;
+    document.getElementById("currentPoints").textContent = PointsBalance;
+    if (PointsBalance > 0) document.querySelector(".header-nav-points").style.display = "block"; 
+    else document.querySelector(".header-nav-points").style.display = "none";
   </script>
 
 
@@ -773,6 +803,208 @@ document.addEventListener("click", function (event) {
 
 </script>
 
+
+  <!-- Firebase Initialization and Auth State Management -->
+  <script type="module">
+
+  // 🔹 Reusable Toast Function
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+  import firebaseConfig from "./config.js";   // ✅ import the config
+
+  // 🔹 Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const authButtons = document.getElementById("authButtons");
+  const accountBtn = document.getElementById("accountBtn");
+
+  // 🔹 Listen for login state changes
+// 🔹 Check Firebase Auth first
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Firebase user
+    fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
+      .then((res) => res.json())
+      .then((dbUser) => {
+        let photoURL = dbUser.profile_image || "assets/img/default-avatar.png";
+        accountBtn.innerHTML = `
+          <img src="${photoURL}" 
+               alt="User Avatar" 
+               class="rounded-circle" 
+               style="width:32px; height:32px; object-fit:cover;">
+        `;
+      });
+
+    document.querySelector(".dropdown-header h6").textContent =
+      `Welcome ${user.displayName}`;
+
+    authButtons.innerHTML = `
+      <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.removeItem("user"); // clear normal session too
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      } catch (err) {
+        showToast("Logout failed: " + err.message, "error");
+      }
+    });
+
+  } else {
+    // 🔹 If not Firebase, check normal login session
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    if (localUser) {
+      // Normal user UI update
+      accountBtn.innerHTML = `
+        <img src="assets/img/default-avatar.png"
+             alt="User Avatar"
+             class="rounded-circle"
+             style="width:32px; height:32px; object-fit:cover;">
+      `;
+
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome ${localUser.username}`;
+
+      authButtons.innerHTML = `
+        <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+      `;
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem("user");
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      });
+
+    } else {
+      // Guest
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome to Optima Bank`;
+
+      authButtons.innerHTML = `
+        <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
+        <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
+      `;
+    }
+  }
+});
+</script>
+
+
+<script>
+
+function generateVoucherCode(length = 8) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+document.addEventListener("click", function(event) {
+  if (event.target && event.target.classList.contains("btn-redeem")) {
+    event.preventDefault();
+
+    const voucherId = event.target.getAttribute("data-id");
+    const voucherTitle = event.target.getAttribute("data-title");
+    const voucherPoints = parseInt(event.target.getAttribute("data-points"), 10);
+
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    if (!localUser) {
+      showToast("Please log in to redeem vouchers.", "error");
+      return;
+    }
+
+    const userPoints = localUser.points || 0;
+
+    document.getElementById("userPoints").textContent = userPoints;
+    document.getElementById("voucherTitle").textContent = voucherTitle; 
+    document.getElementById("voucherPoints").textContent = voucherPoints;
+    document.getElementById("confirmRedeemBtn").setAttribute("data-id", voucherId);
+    document.getElementById("confirmRedeemBtn").setAttribute("data-points", voucherPoints);
+    const redeemModal = new bootstrap.Modal(document.getElementById("redeemModal"));
+    redeemModal.show();
+  }
+
+    const confirmBtn = document.getElementById("confirmRedeemBtn");
+
+    // Clear previous handlers
+    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+
+    // Re-select the button (the old one was replaced)
+    const newConfirmBtn = document.getElementById("confirmRedeemBtn");
+
+    newConfirmBtn.addEventListener("click", async function() {
+
+      const localUser = JSON.parse(sessionStorage.getItem("user"));
+      if (!localUser) {
+        showToast("Please log in to redeem vouchers.", "error");
+        return;
+      }
+      // Collect selected items
+      const selectedItems = [];
+      selectedItems.push({
+          voucher_id: this.getAttribute("data-id"),
+          quantity:  1,
+          code: generateVoucherCode(10)
+      });
+
+      if (selectedItems.length === 0) {
+        showToast("Please select at least one item.", "error");
+        return;
+      }
+
+      // No enough points cannot redeem
+      const userPoints = localUser.points || 0;  
+      const voucherPoints = parseInt(this.getAttribute("data-points"), 10);
+      if (userPoints < voucherPoints) {
+        showToast("Not enough points to redeem this voucher.", "error");
+        return;
+      }
+
+      try {
+      const res = await fetch("http://localhost/TheGlory/redeem.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: localUser.id,
+          items: selectedItems
+        })
+      });
+
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast("Redemption successful! Use Voucher Code to redeem your rewards", "success");
+        localUser.points -= data.points_deducted;
+        sessionStorage.setItem("user", JSON.stringify(localUser));
+        setTimeout(() => { window.location.href = "account.html#orders"; }, 2000);
+      } else {
+        showToast("Redemption failed: " + data.message, "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Error redeeming vouchers", "error");
+    }
+  });
+});
+</script>
 </body>
 
 </html>

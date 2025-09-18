@@ -127,6 +127,20 @@ h6 {
   font-family: var(--heading-font);
 }
 
+.truncate-text {
+  display: inline-block;
+  max-width: 100%;   /* adjust width based on your layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  padding-left: 5px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #44444499;
+}
+
+
 /* Pulsating Play Button
 ------------------------------*/
 .pulsating-play-btn {

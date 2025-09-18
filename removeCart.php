@@ -11,7 +11,7 @@ if ($cartItemId <= 0) {
 }
 
 // Get user_id before deleting (so we can recalc totalItems)
-$getUserSql = "SELECT user_id FROM cartitems WHERE id = ?";
+$getUserSql = "SELECT user_id FROM cartitems WHERE voucher_id = ?";
 $getStmt = $conn->prepare($getUserSql);
 $getStmt->bind_param("i", $cartItemId);
 $getStmt->execute();
@@ -24,7 +24,7 @@ $getStmt->close();
 
 if ($user_id > 0) {
     // Delete the cart item
-    $sql = "DELETE FROM cartitems WHERE id = ?";
+    $sql = "DELETE FROM cartitems WHERE voucher_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $cartItemId);
     $stmt->execute();

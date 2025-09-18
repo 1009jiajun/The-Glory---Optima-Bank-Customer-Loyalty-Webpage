@@ -96,12 +96,16 @@
     <!-- Navigation -->
     <div class="header-nav">
       <div class="container-fluid container-xl position-relative">
-        <nav id="navmenu" class="navmenu">
+        <nav id="navmenu" class="navmenu" style="display: flex; align-items: center; justify-content: space-between;">
           <ul>
             <li><a href="index.html" >Home</a></li>
             <li><a href="category.html">Vouchers</a></li>
-            <li><a href="cart.html" class="active">Cart</a></li>            
+            <li><a href="cart.html" class="active">Cart</a></li>  
+            <li><a href="account.html">Account</a></li>           
           </ul>
+          <div class="header-nav-points" style="display: none;">
+            <h4 class="current-points" style="font-size: 14px; font-weight: 600; color: white; margin: 15px 0;">Current Points: <span id="currentPoints">0</span></h4>
+          </div>
         </nav>
       </div>
     </div>
@@ -159,8 +163,8 @@
               <h4 class="summary-title">Redemption Summary</h4>
 
               <div class="summary-item">
-                <span class="summary-label">My Balance</span>
-                <span class="summary-value">3200</span>
+                <span class="summary-label" style="font-size: 17px;">My Balance</span>
+                <span class="summary-value" style="font-size: 17px;"></span>
               </div>
 
               <div class="summary-total">
@@ -169,13 +173,13 @@
               </div>
 
               <div class="checkout-button">
-                <a href="#" class="btn btn-accent w-100">
-                  Proceed to Redeem <i class="bi bi-arrow-right"></i>
+                <a href="#" class="btn btn-accent w-100" onclick="proceedToRedeem()">
+                  Redeem Now<i class="bi bi-arrow-right"></i>
                 </a>
               </div>
 
               <div class="continue-shopping">
-                <a href="#" class="btn btn-link w-100">
+                <a href="category.html" class="btn btn-link w-100">
                   <i class="bi bi-arrow-left"></i> Continue Browsing
                 </a>
               </div>
@@ -335,7 +339,10 @@ onAuthStateChanged(auth, (user) => {
                alt="User Avatar" 
                class="rounded-circle" 
                style="width:32px; height:32px; object-fit:cover;">
-        `;
+        `;    
+        if (dbUser.points !== undefined) {
+          document.querySelector('.summary-item .summary-value').textContent = dbUser.points;
+        }
       });
 
     document.querySelector(".dropdown-header h6").textContent =
@@ -370,6 +377,10 @@ onAuthStateChanged(auth, (user) => {
 
       document.querySelector(".dropdown-header h6").textContent =
         `Welcome ${localUser.username}`;
+
+      if (localUser.points !== undefined) {
+        document.querySelector('.summary-item .summary-value').textContent = localUser.points;
+      }
 
       authButtons.innerHTML = `
         <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
@@ -406,6 +417,10 @@ async function loadCart() {
   let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
   document.querySelector(".header-action-btn .badge").textContent = cartQty;
 
+  let PointsBalance = localUser?.points || 0;
+  document.getElementById("currentPoints").textContent = PointsBalance;
+  document.querySelector(".header-nav-points").style.display = PointsBalance > 0 ? "block" : "none";
+
   try {
     const res = await fetch(`http://localhost/TheGlory/getCart.php?user_id=${localUser.id}`);
     const cart = await res.json();
@@ -420,40 +435,36 @@ async function loadCart() {
     let html = `
       <div class="cart-header d-none d-lg-block">
         <div class="row align-items-center">
-          <div class="col-lg-6"><h5>Reward</h5></div>
+          <div class="col-lg-4"><h5>Reward</h5></div>
           <div class="col-lg-2 text-center"><h5>Points</h5></div>
           <div class="col-lg-2 text-center"><h5>Quantity</h5></div>
           <div class="col-lg-2 text-center"><h5>Sub-total</h5></div>
+          <div class="col-lg-2 text-center"><h5>Select</h5></div>
         </div>
       </div>
     `;
 
-    let totalPoints = 0;
-
     cart.items.forEach(item => {
       const subTotal = item.points * item.quantity;
-      totalPoints += subTotal;
 
       html += `
         <div class="cart-item">
           <div class="row align-items-center">
-            <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
+            <div class="col-lg-4 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
               <div class="product-info d-flex align-items-center" style="padding: 0px;">
                 <div class="product-image" style="width: 7rem; height: 7rem;">
                   <img src="${item.image}" alt="Product" class="img-fluid" loading="lazy">
                 </div>
                 <div class="product-details">
                   <h6 class="product-title">${item.title}</h6>
-                  <button class="remove-item" type="button" onclick="removeFromCart(${item.id})">
+                  <button class="remove-item" type="button" onclick="removeFromCart(${item.voucher_id})">
                     <i class="bi bi-trash"></i> Remove
                   </button>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-              <div class="price-tag">
-                <span class="current-price">${item.points}</span>
-              </div>
+              <div class="price-tag"><span>${item.points}</span></div>
             </div>
             <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
               <div class="quantity-selector">
@@ -467,8 +478,12 @@ async function loadCart() {
               </div>
             </div>
             <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-              <div class="item-total">
-                <span>${subTotal}</span>
+              <div class="item-total"><span>${subTotal}</span></div>
+            </div>
+            <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+              <div class="select-item">
+                <input type="checkbox" class="form-check-input cart-checkbox" 
+                  data-subtotal="${subTotal}" style="transform: scale(1.5);" checked>
               </div>
             </div>
           </div>
@@ -476,15 +491,17 @@ async function loadCart() {
       `;
     });
 
-    html += `
-      <div class="summary-total mt-4">
-        <span class="summary-label">Total Points Used</span>
-        <span class="summary-value">${totalPoints}</span>
-      </div>
-    `;
+    html += `<div class="summary-total mt-4"> <span class="summary-label">Total Points Used</span> <span class="summary-value final2"></span> </div>`;
 
     document.getElementById("cartItems").innerHTML = html;
-    document.querySelector(".summary-value.final").textContent = totalPoints;
+
+    // 🔹 Attach event listener for recalculating total
+    document.querySelectorAll(".cart-checkbox").forEach(cb => {
+      cb.addEventListener("change", updateTotalPoints);
+    });
+
+    // 🔹 Initial calculation
+    updateTotalPoints();
 
   } catch (err) {
     console.error("Error loading cart:", err);
@@ -492,12 +509,22 @@ async function loadCart() {
   }
 }
 
+// 🔹 Function to recalculate total based on checked items
+function updateTotalPoints() {
+  let total = 0;
+  document.querySelectorAll(".cart-checkbox:checked").forEach(cb => {
+    total += parseInt(cb.dataset.subtotal);
+  });
+  document.querySelector(".summary-value.final").textContent = total;
+  document.querySelector(".summary-value.final2").textContent = total;  
+}
+
 async function removeFromCart(cartItemId) {
   if (!confirm("Remove this item?")) return;
   const res = await fetch(`http://localhost/TheGlory/removeCart.php?id=${cartItemId}`);
   const data = await res.json();
-  latestCartQty = data.totalItems; // Get updated total items from response
-  let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  currentCartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  latestCartQty = currentCartQty - 1;
   sessionStorage.setItem("cartCount", latestCartQty);
   document.querySelector(".header-action-btn .badge").textContent = latestCartQty;
   loadCart();
@@ -540,6 +567,117 @@ async function clearCart() {
 }
 
 document.addEventListener("DOMContentLoaded", loadCart);
+</script>
+
+<script>
+  // 🔹 Reusable Toast Function
+function showToast(message, type = "success") {
+  const toast = document.createElement("div");
+  toast.className = `custom-toast ${type}`;
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+function generateVoucherCode(length = 8) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+async function proceedToRedeem() {
+  // confirm action
+  if (!confirm("Confirm redemption of selected vouchers?")) return;
+  // Ensure user is logged in
+  const localUser = JSON.parse(sessionStorage.getItem("user"));
+  if (!localUser) {
+    showToast("Please log in to redeem.", "error");
+    return;
+  }
+
+  // if the balance not enough to redeem for selected items
+  let total = 0;
+  document.querySelectorAll(".cart-checkbox:checked").forEach(cb => {
+    total += parseInt(cb.dataset.subtotal);
+  });
+  if (total > localUser.points) {
+    showToast("Insufficient points for selected items.", "error");
+    return;
+  }
+
+  // at least one item selected
+  const checkboxes = document.querySelectorAll(".cart-checkbox");
+  const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+  if (!anyChecked) {
+    showToast("Please select at least one item to redeem.", "error");
+    return;
+  }
+
+  // Collect selected items
+  const selectedItems = [];
+  document.querySelectorAll(".cart-item").forEach((itemEl) => {
+    const checkbox = itemEl.querySelector(".cart-checkbox");
+    if (checkbox && checkbox.checked) {
+      const voucherId = itemEl.querySelector(".remove-item").getAttribute("onclick").match(/\d+/)[0]; // extract id from button
+      const voucherQuantity = parseInt(itemEl.querySelector(".quantity-input").value, 10);
+      for (let i = 0; i < voucherQuantity; i++) {
+        selectedItems.push({
+          voucher_id: voucherId,
+          quantity: 1,
+        code: generateVoucherCode(10)
+      });
+      }
+    }
+  });
+
+  if (selectedItems.length === 0) {
+    showToast("Please select at least one item.", "error");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost/TheGlory/redeem.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: localUser.id,
+        items: selectedItems
+      })
+    });
+
+    const data = await res.json();
+    if (data.status === "success") {
+      showToast("Redemption successful! Use Voucher Code to redeem your rewards", "success");
+      // previous cart count - number of selected items
+      let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+      cartQty -= selectedItems.reduce((sum, item) => sum + parseInt(item.quantity), 0);
+      cartQty = Math.max(cartQty, 0); // prevent negative
+      sessionStorage.setItem("cartCount", cartQty);
+      document.querySelector(".header-action-btn .badge").textContent = cartQty;
+      // remove redeemed items from cart UI & database
+      document.querySelectorAll(".cart-checkbox:checked").forEach(cb => {
+        cb.closest(".cart-item").remove();
+      }); 
+      // update user points in session
+      localUser.points -= total;
+      sessionStorage.setItem("user", JSON.stringify(localUser));
+      loadCart();
+      setTimeout(() => { window.location.href = "account.html#orders"; }, 3000);
+    } else {
+      showToast("Redemption failed: " + data.message, "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Error redeeming vouchers", "error");
+  }
+}
 </script>
 
 

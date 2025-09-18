@@ -12,7 +12,7 @@ $email = $data['email'] ?? null;
 $password = $data['password'] ?? null;
 
 // ✅ Fetch user by email
-$stmt = $conn->prepare("SELECT id, username, phone_number,password FROM user WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, username, phone_number, points,password FROM user WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -28,7 +28,8 @@ if ($result->num_rows === 1) {
             "username" => $user["username"],
             "user_id" => $user["id"],
             "email" => $email,
-            "phone_number" => $user["phone_number"] ?? null
+            "phone_number" => $user["phone_number"] ?? null,
+            "points" => $user["points"] ?? 0
         ]);
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid password"]);
