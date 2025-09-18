@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2025 at 09:06 AM
+-- Generation Time: Sep 18, 2025 at 07:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,9 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cartitemhistory` (
   `id` int(11) NOT NULL,
-  `voucher_id` int(11) NOT NULL,
+  `voucher_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `code` varchar(10) NOT NULL,
   `completed_date` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -39,8 +40,16 @@ CREATE TABLE `cartitemhistory` (
 -- Dumping data for table `cartitemhistory`
 --
 
-INSERT INTO `cartitemhistory` (`id`, `voucher_id`, `user_id`, `quantity`, `completed_date`) VALUES
-(1, 1, 4, 1, '2025-09-08 00:36:04');
+INSERT INTO `cartitemhistory` (`id`, `voucher_id`, `user_id`, `quantity`, `code`, `completed_date`) VALUES
+(40, 9, 5, 1, '2RDGQWI3U2', '2025-09-18 16:23:42'),
+(51, 7, 5, 2, 'S5UYO4M2B9', '2025-09-18 16:53:55'),
+(52, 8, 5, 2, 'XR3XODBKTA', '2025-09-18 16:55:19'),
+(53, 10, 5, 1, '4DKEALNFFH', '2025-09-18 17:00:10'),
+(54, 10, 5, 1, '5JTUM7Z1HC', '2025-09-18 17:00:10'),
+(55, 4, 5, 1, 'KJVUQCG2EY', '2025-09-18 17:00:35'),
+(56, 4, 5, 1, '7FZFFJ1T26', '2025-09-18 17:00:35'),
+(57, 3, 5, 1, 'LNDO6UVLP8', '2025-09-18 17:00:57'),
+(58, 6, 5, 1, 'L3JHWPCZKF', '2025-09-18 17:07:08');
 
 -- --------------------------------------------------------
 
@@ -62,7 +71,7 @@ CREATE TABLE `cartitems` (
 
 INSERT INTO `cartitems` (`id`, `voucher_id`, `user_id`, `quantity`, `added_at`) VALUES
 (2, 1, 4, 1, '2025-09-08 00:35:31'),
-(13, 6, 5, 1, '2025-09-18 02:49:44');
+(49, 8, 5, 1, '2025-09-18 17:08:04');
 
 -- --------------------------------------------------------
 
@@ -115,7 +124,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
-  `points` int(11) DEFAULT 0,
+  `points` int(11) DEFAULT 500,
   `address` text DEFAULT NULL,
   `about_me` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
@@ -126,9 +135,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `firebase_uid`, `email`, `username`, `phone_number`, `password`, `profile_image`, `is_active`, `points`, `address`, `about_me`, `created_at`) VALUES
-(2, NULL, 'alice@example.com', 'alice123', '0123456789', 'hashedpass1', NULL, 1, 1000, '123 Street, KL', 'Loves shopping and food deals.', '2025-09-08 00:18:55'),
-(4, NULL, 'muhdfikrizaman@gmail.com', 'fikri11', '01116741728', 'Fikri11#', NULL, 1, NULL, 'DT312, Taman Bukit Tambun, Melaka', 'Loves travel and food deals.', '2025-09-08 00:30:11'),
-(5, 'xscyEwgsl2UfooM5LccLhC8ElhH3', 'boojiajun98@gmail.com', 'BOO JIA JUN', NULL, NULL, 'assets/img/profile/6e66086560ee7fc74b41e3482515fcfd.jpg', 1, 0, NULL, NULL, '2025-09-16 07:25:13');
+(2, NULL, 'alice@example.com', 'alice123', '0123456789', 'hashedpass1', NULL, 1, 500, '123 Street, KL', 'Loves shopping and food deals.', '2025-09-08 00:18:55'),
+(4, NULL, 'muhdfikrizaman@gmail.com', 'fikri11', '01116741728', 'Fikri11#', NULL, 1, 500, 'DT312, Taman Bukit Tambun, Melaka', 'Loves travel and food deals.', '2025-09-08 00:30:11'),
+(5, 'xscyEwgsl2UfooM5LccLhC8ElhH3', 'boojiajun98@gmail.com', 'BOO JIA JUN', '', NULL, 'assets/img/profile/6e66086560ee7fc74b41e3482515fcfd.jpg', 1, 120, NULL, NULL, '2025-09-16 07:25:13');
 
 -- --------------------------------------------------------
 
@@ -220,13 +229,13 @@ ALTER TABLE `voucher`
 -- AUTO_INCREMENT for table `cartitemhistory`
 --
 ALTER TABLE `cartitemhistory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -244,7 +253,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `voucher`
@@ -260,7 +269,7 @@ ALTER TABLE `voucher`
 -- Constraints for table `cartitemhistory`
 --
 ALTER TABLE `cartitemhistory`
-  ADD CONSTRAINT `cartitemhistory_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `voucher` (`id`),
+  ADD CONSTRAINT `cartitemhistory_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `voucher` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `cartitemhistory_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
