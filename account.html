@@ -51,12 +51,12 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
             <div class="dropdown account-dropdown">
-              <button class="header-action-btn" data-bs-toggle="dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown" id="accountBtn">
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
@@ -65,20 +65,20 @@
                   <p class="mb-0">Redeem Loyalty Rewards &amp; Manage Account</p>
                 </div>
                 <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                  <a class="dropdown-item d-flex align-items-center" data-bs-toggle="tab" data-tab="settings" href="#settings">
                     <i class="bi bi-person-circle me-2"></i>
                     <span>My Profile</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                  <a class="dropdown-item d-flex align-items-center" data-bs-toggle="tab" data-tab="orders" href="#orders">
                     <i class="bi bi-bag-check me-2"></i>
                     <span>My Redeem History</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                  <a class="dropdown-item d-flex align-items-center" data-bs-toggle="tab" data-tab="points" href="#points">
                     <i class="bi bi-coin me-2"></i>
                     <span>My Points Balance</span>
                   </a>
                 </div>
-                <div class="dropdown-footer">
+                <div class="dropdown-footer" id="authButtons">
                   <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
                   <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
                 </div>
@@ -136,20 +136,20 @@
           </button>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4" id="ProfileSection">
           <!-- Profile Menu -->
           <div class="col-lg-3">
             <div class="profile-menu collapse d-lg-block" id="profileMenu">
               <!-- User Info -->
               <div class="user-info" data-aos="fade-right">
                 <div class="user-avatar">
-                  <img src="assets/img/person/" alt="Profile" loading="lazy">
+                  <img src="" alt="Profile" loading="lazy" id="userAvatar">
                   <span class="status-badge"><i class="bi bi-shield-check"></i></span>
                 </div>
-                <h4>User 1</h4>
+                <h4 id="userName">User 1</h4>
                 <div class="user-status">
                   <i class="bi bi-award"></i>
-                  <span>Premium Member</span>
+                  <span>Member</span>
                 </div>
               </div>
 
@@ -157,21 +157,21 @@
               <nav class="menu-nav">
                 <ul class="nav flex-column" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#orders">
+                    <a class="nav-link active" data-bs-toggle="tab" data-tab="orders" href="#orders">
                       <i class="bi bi-box-seam"></i>
                       <span>Redeem History</span>
-                      <span class="badge">3</span>
+                      <span class="badge">0</span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#wishlist">
+                    <a class="nav-link" data-bs-toggle="tab" data-tab="points" href="#points">
                       <i class="bi bi-heart"></i>
                       <span>My Points Balance</span>
                       <span class="badge">150</span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#settings">
+                    <a class="nav-link" data-bs-toggle="tab" data-tab="settings" href="#settings">
                       <i class="bi bi-gear"></i>
                       <span>Profile Settings</span>
                     </a>
@@ -179,10 +179,10 @@
                 </ul>
 
                 <div class="menu-footer" style="margin-top: 10px;padding-top: 10px;">
-                  <a href="#" class="help-link">
+                  <!-- <a href="#" class="help-link">
                     <i class="bi bi-question-circle"></i>
                     <span>Help Center</span>
-                  </a>
+                  </a> -->
                   <a href="#" class="logout-link">
                     <i class="bi bi-box-arrow-right"></i>
                     <span>Log Out</span>
@@ -673,7 +673,7 @@
                 </div>
 
                 <!-- Wishlist Tab -->
-                <div class="tab-pane fade" id="wishlist">
+                <div class="tab-pane fade" id="points">
                   <div class="section-header" data-aos="fade-up">
                     <h2>My Points Balance</h2>
                     <div class="header-actions">
@@ -986,26 +986,22 @@
                       <h3>Personal Information</h3>
                       <form class="php-email-form settings-form">
                         <div class="row g-3">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                             <label for="userName" class="form-label">User Name</label>
-                            <input type="text" class="form-control" id="userName" value="User 1" required="">
+                            <input type="text" class="form-control" id="userNameField" value="User 1" required="">
                           </div>
                           <div class="col-md-6">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" value="sarah@example.com" required="">
+                            <input type="email" class="form-control" id="emailField" value="sarah@example.com" required="">
                           </div>
                           <div class="col-md-6">
                             <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+                            <input type="tel" class="form-control" id="phoneField" value="+1 (555) 123-4567">
                           </div>
-                          <div class="col-md-6">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" value="123 Main Street, Apt 4B, New York, NY 10001">
-                          </div>
-                          <div class="col-12">
+                          <!-- <div class="col-12">
                             <label for="aboutMe" class="form-label">About Me</label>
                             <textarea class="form-control" id="aboutMe" rows="5">Hello! I'm Sarah, a passionate shopper and fashion enthusiast. I love exploring new trends and finding unique pieces to add to my wardrobe. When I'm not shopping, you can find me traveling, trying out new recipes, or spending time with friends and family.</textarea>
-                          </div>
+                          </div> -->
                         </div>
 
                         <div class="form-buttons">
@@ -1176,6 +1172,207 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Firebase Initialization and Auth State Management -->
+  <script type="module">
+
+    // 🔹 Reusable Toast Function
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `custom-toast ${type}`;
+      toast.textContent = message;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } 
+      from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    import firebaseConfig from "./config.js";   // ✅ import the config
+
+    // 🔹 Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const authButtons = document.getElementById("authButtons");
+    const accountBtn = document.getElementById("accountBtn");
+    const userName = document.getElementById("userName");
+    const userAvatar = document.getElementById("userAvatar");
+    const userNameField = document.getElementById("userNameField");
+    const emailField = document.getElementById("emailField");
+    const phoneField = document.getElementById("phoneField");
+
+    // 🔹 Listen for login state changes
+  // 🔹 Check Firebase Auth first
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // Firebase user
+      fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
+        .then((res) => res.json())
+        .then((dbUser) => {
+          let photoURL = dbUser.profile_image || "assets/img/default-avatar.png";
+          accountBtn.innerHTML = `
+            <img src="${photoURL}" 
+                alt="User Avatar" 
+                class="rounded-circle" 
+                style="width:32px; height:32px; object-fit:cover;">
+          `;
+          userName.textContent = dbUser.username || "User";
+          userAvatar.src = photoURL;
+          userNameField.value = dbUser.username || "";
+          emailField.value = dbUser.email || "";
+          phoneField.value = dbUser.phone || "";
+        });
+
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome ${user.displayName}`;
+
+      authButtons.innerHTML = `
+        <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+      `;
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          sessionStorage.removeItem("user"); // clear normal session too
+          sessionStorage.removeItem("cartCount"); // clear cart count
+          setTimeout(() => location.reload(), 1500);
+          showToast("Logged out successfully", "success");
+        } catch (err) {
+          showToast("Logout failed: " + err.message, "error");
+        }
+      });
+
+      const userResponse = await fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid);
+
+      const userData = await userResponse.json();
+      // if PHP returns array, take first element
+      let userObj = Array.isArray(userData) ? userData[0] : userData;
+      // Save session in browser
+      sessionStorage.setItem("user", JSON.stringify({
+        id: userObj.id,
+        username: userObj.username,
+        email: userObj.email,
+        phone: userObj.phone_number
+      }));
+
+      const cartResponse = await fetch("http://localhost/TheGlory/getCart.php?user_id=" + userObj.id);
+      const cartData = await cartResponse.json();
+      // Use "totalItems" from PHP response instead of length
+      const cartCount = cartData.totalItems || 0;
+      document.querySelector(".header-action-btn .badge").textContent = cartCount;  
+      // save cart count to sessionStorage
+      sessionStorage.setItem("cartCount", cartCount);    
+    } else {
+      // 🔹 If not Firebase, check normal login session
+      const localUser = JSON.parse(sessionStorage.getItem("user"));
+      const userName = document.getElementById("userName");
+      const userAvatar = document.getElementById("userAvatar");
+      const userNameField = document.getElementById("userNameField");
+      const emailField = document.getElementById("emailField");
+      const phoneField = document.getElementById("phoneField");
+
+      if (localUser) {
+        // Normal user UI update
+        accountBtn.innerHTML = `
+          <img src="assets/img/default-avatar.png"
+              alt="User Avatar"
+              class="rounded-circle"
+              style="width:32px; height:32px; object-fit:cover;">
+        `;
+
+        document.querySelector(".dropdown-header h6").textContent =
+          `Welcome ${localUser.username}`;
+
+        authButtons.innerHTML = `
+          <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+        `;
+
+          userName.textContent = localUser.username || "User";
+          userAvatar.src = localUser.profile_image || "assets/img/default-avatar.png";
+          userNameField.value = localUser.username || "";
+          emailField.value = localUser.email || "";
+          phoneField.value = localUser.phone || "";
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          sessionStorage.removeItem("user");
+          setTimeout(() => location.reload(), 1500);
+          showToast("Logged out successfully", "success");
+        });
+
+        const cartResponse = await fetch("http://localhost/TheGlory/getCart.php?user_id=" + localUser.id);
+          const cartData = await cartResponse.json();
+          // Use "totalItems" from PHP response instead of length
+          const cartCount = cartData.totalItems || 0;
+        document.querySelector(".header-action-btn .badge").textContent = cartCount;  
+        // save cart count to sessionStorage
+        sessionStorage.setItem("cartCount", cartCount);  
+
+      } else {
+        // Guest
+        document.querySelector(".dropdown-header h6").textContent =
+          `Welcome to Optima Bank`;
+
+        authButtons.innerHTML = `
+          <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
+          <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
+        `;
+
+        const WholeSection = document.getElementById("ProfileSection");
+        WholeSection.innerHTML = `
+          <p>Please <a href="login.html" style="color: red;text-decoration: underline;">log in</a> to access your account.</p>
+        `;        
+      }
+    }
+  });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sidebarTabs = document.querySelectorAll(".menu-nav .nav-link[data-tab]");
+      const dropdownTabs = document.querySelectorAll(".account-dropdown .dropdown-item[data-tab]");
+      const panes = document.querySelectorAll(".tab-pane");
+
+      // Dropdown clicks (reuse sidebar logic)
+      dropdownTabs.forEach(tab => {
+        tab.addEventListener("click", function (e) {
+          e.preventDefault();
+          // click the slider tab with same data-tab
+          const targetTab = this.getAttribute("data-tab");
+          const sidebarTab = document.querySelector(`.menu-nav .nav-link[data-tab="${targetTab}"]`);
+          if (sidebarTab) {
+            sidebarTab.click();
+          }
+
+          // Close dropdown after selection
+          this.closest(".dropdown-menu").classList.remove("show");
+        });
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Check if URL has hash (#settings)
+      var hash = window.location.hash;
+      if (hash) {
+        var tabTrigger = document.querySelector('a[href="' + hash + '"]');
+        // click the slider tab with same data-tab
+        const targetTab = hash.substring(1); // remove #
+        const sidebarTab = document.querySelector(`.menu-nav .nav-link[data-tab="${targetTab}"]`);
+        if (sidebarTab) {
+          sidebarTab.click();
+        }
+        // scroll to top of screen within 500 ms
+        setTimeout(() => { window.scrollTo(0, 0); }, 500);
+      }
+    });
+  </script>
+
+
 
 </body>
 

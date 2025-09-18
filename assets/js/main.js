@@ -956,6 +956,7 @@
       faqItem.parentNode.classList.toggle('faq-active');
     });
   });
+  
 
 })();
 

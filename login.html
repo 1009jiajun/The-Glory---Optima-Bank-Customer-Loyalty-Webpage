@@ -85,7 +85,7 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
@@ -452,7 +452,8 @@
       sessionStorage.setItem("user", JSON.stringify({
         id: result.user_id,
         username: result.username,
-        email: result.email
+        email: result.email,
+        phone: result.phone_number
       }));
       showToast("Welcome back, " + result.username, "success");
       setTimeout(() => {
@@ -499,7 +500,7 @@
       const resultOfDBStore = await response.json(); // ✅ parse PHP response
       console.log(resultOfDBStore);
 
-      if (resultOfDBStore.status === "success") {      
+      if (resultOfDBStore.status === "success") {
         showToast("Welcome back, " + user.displayName, "success");
         setTimeout(() => {
           window.location.href = "index.html";

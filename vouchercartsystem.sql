@@ -41,13 +41,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `user` MODIFY `password` varchar(255) NULL;
-ALTER TABLE `user` ADD COLUMN `firebase_uid` VARCHAR(128) UNIQUE AFTER `id`;
+
 
 
 INSERT INTO `user` VALUES 
 (2,'alice@example.com','alice123','0123456789','hashedpass1',NULL,1,1000,'123 Street, KL','Loves shopping and food deals.','2025-09-08 08:18:55'),
 (4,'muhdfikrizaman@gmail.com','fikri11','01116741728','Fikri11#',NULL,1,NULL,'DT312, Taman Bukit Tambun, Melaka','Loves travel and food deals.','2025-09-08 08:30:11');
-
+ALTER TABLE `user` ADD COLUMN `firebase_uid` VARCHAR(128) UNIQUE AFTER `id`;
 -- ------------------------------
 -- Table structure for `voucher`
 -- ------------------------------

@@ -84,7 +84,7 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
@@ -459,6 +459,7 @@
         console.log(resultOfDBStore);
 
         if (resultOfDBStore.status === "success") {
+          // getUser.php will use session to fetch user details         
           showToast("Registration successful!", "success");
           setTimeout(() => {
             window.location.href = "index.html";

@@ -3,7 +3,7 @@ include "db.php";
 
 $uid = $_GET['uid'];
 
-$stmt = $conn->prepare("SELECT id, email, username, profile_image FROM user WHERE firebase_uid=?");
+$stmt = $conn->prepare("SELECT id, email, username, phone_number, profile_image FROM user WHERE firebase_uid=?");
 $stmt->bind_param("s", $uid);
 $stmt->execute();
 $result = $stmt->get_result();

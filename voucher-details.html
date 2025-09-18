@@ -51,7 +51,7 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
@@ -98,8 +98,8 @@
       <div class="container-fluid container-xl position-relative">
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="category.html">Vouchers</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="category.html" class="active">Vouchers</a></li>
             <li><a href="cart.html">Cart</a></li>            
           </ul>
         </nav>
@@ -147,14 +147,14 @@
                 </div>
               </div>
 
-              <div class="thumbnail-grid">
+              <!-- <div class="thumbnail-grid">
                 <div class="thumbnail-wrapper thumbnail-item active" data-image="assets/img/product/">
                   <img src="assets/img/product/" alt="View 1" class="img-fluid">
                 </div>
                 <div class="thumbnail-wrapper thumbnail-item" data-image="assets/img/product/">
                   <img src="assets/img/product/" alt="View 2" class="img-fluid">
                 </div>
-                <!-- <div class="thumbnail-wrapper thumbnail-item" data-image="assets/img/product/product-details-8.webp">
+                <div class="thumbnail-wrapper thumbnail-item" data-image="assets/img/product/product-details-8.webp">
                   <img src="assets/img/product/product-details-8.webp" alt="View 3" class="img-fluid">
                 </div>
                 <div class="thumbnail-wrapper thumbnail-item" data-image="assets/img/product/product-details-4.webp">
@@ -165,8 +165,8 @@
                 </div>
                 <div class="thumbnail-wrapper thumbnail-item" data-image="assets/img/product/product-details-3.webp">
                   <img src="assets/img/product/product-details-3.webp" alt="View 6" class="img-fluid">
-                </div> -->
-              </div>
+                </div>
+              </div> -->
             </div>
           </div>
 
@@ -215,7 +215,7 @@
                 </div>
 
                 <div class="action-buttons">
-                  <button class="btn primary-action">
+                  <button class="btn primary-action add-to-cart">
                     <i class="bi bi-bag-plus"></i>
                     Add to Cart
                   </button>
@@ -250,7 +250,7 @@
         </div>
 
         <!-- Information Tabs -->
-        <div class="row mt-5" data-aos="fade-up" data-aos-delay="300">
+        <div class="row mt-3">
           <div class="col-12">
             <div class="info-tabs-container">
               <nav class="tabs-navigation nav" style="margin-bottom: 5px;">
@@ -676,6 +676,110 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <script>
+    // Helper: Get query string parameter
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    async function loadVoucher() {
+      const voucherId = getQueryParam("id");
+      if (!voucherId) {
+        document.querySelector(".product-details").innerHTML = "<h2>Voucher not found.</h2>";
+        return;
+      }
+
+      try {
+        const response = await fetch(`getVoucherDetails.php?id=${voucherId}`);
+        const voucher = await response.json();
+
+        if (voucher.error) {
+          document.querySelector(".product-details").innerHTML = "<h2>" + voucher.error + "</h2>";
+          return;
+        }
+
+        // Fill content dynamically
+        document.querySelector(".badge-category").textContent = voucher.category;
+        document.querySelector(".product-name").textContent = voucher.title;
+        document.querySelector(".sale-price").textContent = voucher.points + " points";
+        document.querySelector(".product-description p").textContent = voucher.description;
+        document.querySelector(".quantity-left").textContent = "Available"; // you can add stock column later
+
+        // Images
+        document.getElementById("main-product-image").src = voucher.image;
+        document.getElementById("main-product-image").setAttribute("data-zoom", voucher.image);
+
+        // Thumbnail
+        // document.querySelector(".thumbnail-item img").src = voucher.image;
+
+        // Terms & Conditions
+        document.querySelector("#ecommerce-product-details-5-overview p").innerHTML = voucher.terms_conditions;
+
+        //add-to-cart button data
+        document.querySelector(".add-to-cart").setAttribute("data-id", voucher.id);
+      } catch (err) {
+        console.error("Error fetching voucher:", err);
+        document.querySelector(".product-details").innerHTML = "<h2>Failed to load voucher.</h2>";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadVoucher);
+  </script>
+
+<script>
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  document.querySelector(".add-to-cart").addEventListener("click", function () {
+    const voucherId = this.getAttribute("data-id");
+    const quantity = parseInt(document.querySelector(".quantity-input").value);
+
+    if (!voucherId || quantity < 1) {
+      alert("Invalid voucher or quantity.");
+      return;
+    }
+
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    const userId = localUser ? localUser.id : 0;
+
+    fetch("http://localhost/TheGlory/addToCart.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ voucher_id: voucherId, user_id: userId, quantity: quantity })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          sessionStorage.setItem("cartCount", data.totalItems);
+          document.querySelector(".badge").textContent = data.totalItems;
+          showToast("Voucher added to cart!", "success");
+          // Optionally update cart UI here
+        } else {
+          showToast("Failed to add voucher to cart: " + data.message, "error");
+        }
+      })
+      .catch(error => {
+        console.error("Error adding to cart:", error);
+        showToast("An error occurred while adding to cart.", "error");
+      });
+  });
+</script>
+<script>
+  let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  document.querySelector(".header-action-btn .badge").textContent = cartQty;
+</script>
 </body>
 
 </html>

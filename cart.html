@@ -51,12 +51,12 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
             <div class="dropdown account-dropdown">
-              <button class="header-action-btn" data-bs-toggle="dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown" id="accountBtn">
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
@@ -78,7 +78,7 @@
                     <span>My Points Balance</span>
                   </a>
                 </div>
-                <div class="dropdown-footer">
+                <div class="dropdown-footer" id="authButtons">
                   <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
                   <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
                 </div>
@@ -130,145 +130,9 @@
 
         <div class="row">
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <div class="cart-items">
-              <div class="cart-header d-none d-lg-block">
-                <div class="row align-items-center">
-                  <div class="col-lg-6">
-                    <h5>Reward</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Points</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Quantity</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Sub-total</h5>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 1 -->
-              <div class="cart-item">
-                <div class="row align-items-center">
-                  <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-1.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Lorem ipsum dolor sit amet</h6>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">800</span>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="1" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="item-total">
-                      <span>800</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <!-- Cart Item 2 -->
-              <div class="cart-item">
-                <div class="row align-items-center">
-                  <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-3.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Consectetur adipiscing elit</h6>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">600</span>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="2" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="item-total">
-                      <span>1200</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <!-- Cart Item 3 -->
-              <div class="cart-item">
-                <div class="row align-items-center">
-                  <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-5.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Sed do eiusmod tempor</h6>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">300</span>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="1" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
-                    <div class="item-total">
-                      <span>300</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <div class="cart-actions">
+            <div class="cart-items" id="cartItems">
+              <!-- Cart items will be dynamically loaded here --></div>
+            <div class="cart-actions">
                 <div class="row">
                   <div class="col-lg-6 mb-3 mb-lg-0">
                     <!-- <div class="coupon-form">
@@ -282,13 +146,12 @@
                     <!-- <button class="btn btn-outline-heading me-2">
                       <i class="bi bi-arrow-clockwise"></i> Update Cart
                     </button> -->
-                    <button class="btn btn-outline-remove">
+                    <button class="btn btn-outline-remove" onclick="clearCart()" style="display:none;">
                       <i class="bi bi-trash"></i> Clear Cart
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
 
           <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
@@ -302,7 +165,7 @@
 
               <div class="summary-total">
                 <span class="summary-label">Total Points Used</span>
-                <span class="summary-value">2300</span>
+                <span class="summary-value final">0</span>
               </div>
 
               <div class="checkout-button">
@@ -404,12 +267,6 @@
                   <i class="bi bi-cash" aria-label="Cash on Delivery"></i>
                 </div>
               </div>
-
-              <!-- <div class="legal-links">
-                <a href="tos.html">Terms</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="tos.html">Cookies</a>
-              </div> -->
             </div>
           </div>
         </div>
@@ -435,6 +292,256 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Firebase Initialization and Auth State Management -->
+  <script type="module">
+
+  // 🔹 Reusable Toast Function
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+  import firebaseConfig from "./config.js";   // ✅ import the config
+
+  // 🔹 Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const authButtons = document.getElementById("authButtons");
+  const accountBtn = document.getElementById("accountBtn");
+
+  // 🔹 Listen for login state changes
+// 🔹 Check Firebase Auth first
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Firebase user
+    fetch("http://localhost/TheGlory/getUser.php?uid=" + user.uid)
+      .then((res) => res.json())
+      .then((dbUser) => {
+        let photoURL = dbUser.profile_image || "assets/img/default-avatar.png";
+        accountBtn.innerHTML = `
+          <img src="${photoURL}" 
+               alt="User Avatar" 
+               class="rounded-circle" 
+               style="width:32px; height:32px; object-fit:cover;">
+        `;
+      });
+
+    document.querySelector(".dropdown-header h6").textContent =
+      `Welcome ${user.displayName}`;
+
+    authButtons.innerHTML = `
+      <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.removeItem("user"); // clear normal session too
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      } catch (err) {
+        showToast("Logout failed: " + err.message, "error");
+      }
+    });
+
+  } else {
+    // 🔹 If not Firebase, check normal login session
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    if (localUser) {
+      // Normal user UI update
+      accountBtn.innerHTML = `
+        <img src="assets/img/default-avatar.png"
+             alt="User Avatar"
+             class="rounded-circle"
+             style="width:32px; height:32px; object-fit:cover;">
+      `;
+
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome ${localUser.username}`;
+
+      authButtons.innerHTML = `
+        <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+      `;
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem("user");
+        setTimeout(() => location.reload(), 1500);
+        showToast("Logged out successfully", "success");
+      });
+
+    } else {
+      // Guest
+      document.querySelector(".dropdown-header h6").textContent =
+        `Welcome to Optima Bank`;
+
+      authButtons.innerHTML = `
+        <a href="login.html" class="btn btn-primary w-100 mb-2">Sign In</a>
+        <a href="register.html" class="btn btn-outline-primary w-100">Register</a>
+      `;
+    }
+  }
+});
+</script>
+
+<script>
+async function loadCart() {
+  const localUser = JSON.parse(sessionStorage.getItem("user"));
+  if (!localUser) {
+    document.getElementById("cartItems").innerHTML = "<p>Please log in to view your cart.</p>";
+    return;
+  }
+
+  let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  document.querySelector(".header-action-btn .badge").textContent = cartQty;
+
+  try {
+    const res = await fetch(`http://localhost/TheGlory/getCart.php?user_id=${localUser.id}`);
+    const cart = await res.json();
+
+    if (!cart.items || cart.items.length === 0) {
+      document.getElementById("cartItems").innerHTML = "<p>Your cart is empty.</p>";
+      return;
+    }
+
+    document.querySelector(".btn-outline-remove").style.display = "inline-block";
+
+    let html = `
+      <div class="cart-header d-none d-lg-block">
+        <div class="row align-items-center">
+          <div class="col-lg-6"><h5>Reward</h5></div>
+          <div class="col-lg-2 text-center"><h5>Points</h5></div>
+          <div class="col-lg-2 text-center"><h5>Quantity</h5></div>
+          <div class="col-lg-2 text-center"><h5>Sub-total</h5></div>
+        </div>
+      </div>
+    `;
+
+    let totalPoints = 0;
+
+    cart.items.forEach(item => {
+      const subTotal = item.points * item.quantity;
+      totalPoints += subTotal;
+
+      html += `
+        <div class="cart-item">
+          <div class="row align-items-center">
+            <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
+              <div class="product-info d-flex align-items-center" style="padding: 0px;">
+                <div class="product-image" style="width: 7rem; height: 7rem;">
+                  <img src="${item.image}" alt="Product" class="img-fluid" loading="lazy">
+                </div>
+                <div class="product-details">
+                  <h6 class="product-title">${item.title}</h6>
+                  <button class="remove-item" type="button" onclick="removeFromCart(${item.id})">
+                    <i class="bi bi-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+              <div class="price-tag">
+                <span class="current-price">${item.points}</span>
+              </div>
+            </div>
+            <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+              <div class="quantity-selector">
+                <button class="quantity-btn decrease" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">
+                  <i class="bi bi-dash"></i>
+                </button>
+                <input type="number" class="quantity-input" value="${item.quantity}" min="1" readonly>
+                <button class="quantity-btn increase" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+              <div class="item-total">
+                <span>${subTotal}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `
+      <div class="summary-total mt-4">
+        <span class="summary-label">Total Points Used</span>
+        <span class="summary-value">${totalPoints}</span>
+      </div>
+    `;
+
+    document.getElementById("cartItems").innerHTML = html;
+    document.querySelector(".summary-value.final").textContent = totalPoints;
+
+  } catch (err) {
+    console.error("Error loading cart:", err);
+    document.getElementById("cartItems").innerHTML = "<p>Failed to load cart.</p>";
+  }
+}
+
+async function removeFromCart(cartItemId) {
+  if (!confirm("Remove this item?")) return;
+  const res = await fetch(`http://localhost/TheGlory/removeCart.php?id=${cartItemId}`);
+  const data = await res.json();
+  latestCartQty = data.totalItems; // Get updated total items from response
+  let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  sessionStorage.setItem("cartCount", latestCartQty);
+  document.querySelector(".header-action-btn .badge").textContent = latestCartQty;
+  loadCart();
+}
+
+async function updateQuantity(cartItemId, newQty) {
+  if (newQty < 1) {
+    alert("Quantity cannot be less than 1.");
+    return;
+  }
+  const res2 = await fetch(`http://localhost/TheGlory/updateCart.php?id=${cartItemId}&quantity=${newQty}`);
+  const data = await res2.json();
+  latestCartQty = data.totalItems; // Get updated total items from response
+  let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+  sessionStorage.setItem("cartCount", latestCartQty);
+  document.querySelector(".header-action-btn .badge").textContent = latestCartQty;
+  loadCart();
+}
+
+// Clear all cart items for logged-in user
+async function clearCart() {
+  if (!confirm("Clear all items from cart?")) return;
+  const localUser = JSON.parse(sessionStorage.getItem("user"));
+  if (!localUser) {
+    alert("Please log in to clear your cart.");
+    return;
+  }
+  const res = await fetch(`http://localhost/TheGlory/clearCart.php?user_id=${localUser.id}`);
+  const data = await res.json();
+  if (data.status === "success") {
+    sessionStorage.setItem("cartCount", 0);
+    document.querySelector(".header-action-btn .badge").textContent = 0;
+    document.querySelector(".summary-value.final").textContent = 0;
+    loadCart();
+    document.querySelector(".btn-outline-remove").style.display = "none";
+    showToast("Cart cleared successfully", "success");
+  } else {
+    showToast("Failed to clear cart", "error");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadCart);
+</script>
+
 
 </body>
 

@@ -51,7 +51,7 @@
             <!-- Cart -->
             <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <span class="badge">0</span>
             </a>
 
             <!-- Account -->
@@ -126,7 +126,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-lg-4 sidebar">
+        <div class="col-12 col-md-4 col-lg-3 sidebar">
 
           <div class="widgets-container">
 
@@ -140,7 +140,7 @@
                 <!-- Food & Beverages Category (no subcategories) -->
                 <li class="category-item">
                   <div class="d-flex justify-content-between align-items-center category-header">
-                    <a href="#" class="category-link">Food &amp; Beverages</a>
+                    <a href="#" class="category-link">Food & Beverage</a>
                   </div>
                 </li>
 
@@ -221,7 +221,7 @@
 
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-12 col-md-8 col-lg-9">
 
           <!-- Category Header Section -->
           <section id="category-header" class="category-header section">
@@ -229,9 +229,9 @@
             <div class="container" data-aos="fade-up">
 
               <!-- Filter and Sort Options -->
-              <div class="filter-container mb-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="filter-container mb-0" data-aos="fade-up" data-aos-delay="100">
                 <div class="row g-3">
-                  <div class="col-12 col-md-6 col-lg-4">
+                  <div class="col-12 col-md-12 col-lg-4">
                     <div class="filter-item search-form">
                       <label for="productSearch" class="form-label">Search Rewards</label>
                       <div class="input-group">
@@ -259,20 +259,12 @@
                     <div class="filter-item">
                       <label class="form-label">View</label>
                       <div class="d-flex align-items-center">
-                        <div class="view-options me-3">
-                          <button type="button" class="btn view-btn active" data-view="grid" aria-label="Grid view">
-                            <i class="bi bi-grid-3x3-gap-fill"></i>
-                          </button>
-                          <button type="button" class="btn view-btn" data-view="list" aria-label="List view">
-                            <i class="bi bi-list-ul"></i>
-                          </button>
-                        </div>
-                        <div class="items-per-page">
-                          <select class="form-select" id="itemsPerPage" aria-label="Items per page">
-                            <option value="12">12 per page</option>
-                            <option value="24">24 per page</option>
-                            <option value="48">48 per page</option>
-                            <option value="96">96 per page</option>
+                        <div class="items-per-page" style="width: 100%;">
+                          <select class="form-select" id="itemsPerPage" aria-label="Items per page" style="width: 100%;">
+                            <option value="9">9 per page</option>
+                            <option value="15">15 per page</option>
+                            <option value="21">21 per page</option>
+                            <option value="27">27 per page</option>
                           </select>
                         </div>
                       </div>
@@ -284,15 +276,7 @@
                   <div class="col-12" data-aos="fade-up" data-aos-delay="200">
                     <div class="active-filters">
                       <span class="active-filter-label">Active Filters:</span>
-                      <div class="filter-tags">
-                        <span class="filter-tag">
-                          Electronics <button class="filter-remove"><i class="bi bi-x"></i></button>
-                        </span>
-                        <span class="filter-tag">
-                          0 to 500 Points <button class="filter-remove"><i class="bi bi-x"></i></button>
-                        </span>
-                        <button class="clear-all-btn">Clear All</button>
-                      </div>
+                      <div class="filter-tags"></div>
                     </div>
                   </div>
                 </div>
@@ -307,96 +291,7 @@
           <section id="category-product-list" class="category-product-list section">
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <div class="row g-4">
-                <!-- Product 1 -->
-                <div class="col-6 col-xl-4">
-                  <div class="product-card" data-aos="zoom-in">
-                    <div class="product-image">
-                      <img src="assets/img/product/" class="main-image img-fluid" alt="Product">
-                      <img src="assets/img/product/" class="hover-image img-fluid" alt="Product Variant">
-                      <div class="product-overlay">
-                        <div class="product-actions">
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Quick View">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Add to Cart">
-                            <i class="bi bi-cart-plus"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="product-details">
-                      <div class="product-category">Electronics</div>
-                      <h4 class="product-title"><a href="product-details.html">Tempor Incididunt</a></h4>
-                      <div class="product-meta">
-                        <div class="product-price">120 Points</div>                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="col-6 col-xl-4">
-                  <div class="product-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="product-image">
-                      <img src="assets/img/product/" class="main-image img-fluid" alt="Product">
-                      <img src="assets/img/product/" class="hover-image img-fluid" alt="Product Variant">
-                      <div class="product-overlay">
-                        <div class="product-actions">
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Quick View">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Add to Cart">
-                            <i class="bi bi-cart-plus"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <!-- <div class="product-badge new">New</div> -->
-                    </div>
-                    <div class="product-details">
-                      <div class="product-category">Electronics</div>
-                      <h4 class="product-title"><a href="product-details.html">Elit Consectetur</a></h4>
-                      <div class="product-meta">
-                        <div class="product-price">95 Points</div>                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="col-6 col-xl-4">
-                  <div class="product-card" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="product-image">
-                      <img src="assets/img/product/" class="main-image img-fluid" alt="Product">
-                      <img src="assets/img/product/" class="hover-image img-fluid" alt="Product Variant">
-                      <div class="product-overlay">
-                        <div class="product-actions">
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Quick View">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button type="button" class="action-btn" data-bs-toggle="tooltip" title="Add to Cart">
-                            <i class="bi bi-cart-plus"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <!-- <div class="product-badge sale">-25%</div> -->
-                    </div>
-                    <div class="product-details">
-                      <div class="product-category">Electronics</div>
-                      <h4 class="product-title"><a href="product-details.html">Adipiscing Magna</a></h4>
-                      <div class="product-meta">
-                        <div class="product-price">
-                          75 Points
-                          <span class="original-price">99 Points</span>
-                        </div>                      
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
+              <div class="row g-4" id="voucher-list"></div>
             </div>
 
           </section><!-- /Category Product List Section -->
@@ -549,6 +444,334 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+  let filters = {
+    search: "",
+    category: "",
+    min_points: 0,
+    max_points: 1000,
+    sort: "",
+    limit: 9,
+    page: 1
+  };
+
+  // 🔹 Reusable Toast Function
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `custom-toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  function buildPagination(total) {
+    const totalPages = Math.ceil(total / filters.limit);
+    const pagination = document.querySelector("#category-pagination nav ul");
+    pagination.innerHTML = "";
+
+    if (totalPages <= 1) return; // no pagination needed
+
+    // Prev button
+    pagination.innerHTML += `
+      <li>
+        <a href="#" class="prev-page ${filters.page === 1 ? "disabled" : ""}">
+          <i class="bi bi-arrow-left"></i>
+          <span class="d-none d-sm-inline">Previous</span>
+        </a>
+      </li>`;
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      pagination.innerHTML += `
+        <li><a href="#" class="page-link ${filters.page === i ? "active" : ""}" data-page="${i}">${i}</a></li>`;
+    }
+
+    // Next button
+    pagination.innerHTML += `
+      <li>
+        <a href="#" class="next-page ${filters.page === totalPages ? "disabled" : ""}">
+          <span class="d-none d-sm-inline">Next</span>
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </li>`;
+  }
+
+  async function loadVouchers() {
+    try {
+      let url = "http://localhost/TheGlory/getVoucher.php?";
+      url += new URLSearchParams(filters).toString();
+
+      const res = await fetch(url);
+      const result = await res.json();
+
+      const vouchers = result.data || [];
+      const total = result.total || 0;
+
+      // Update total text
+      if (total === 0) showToast("No results found.", "error");
+      else showToast("Total results found: " + total, "success");
+
+      const container = document.getElementById("voucher-list");
+      container.innerHTML = "";
+
+      if (!vouchers || vouchers.length === 0) {
+        container.innerHTML = `<p class="text-center">No vouchers found.</p>`;
+        document.querySelector("#category-pagination nav ul").innerHTML = "";
+        return;
+      }
+
+      vouchers.forEach(v => {
+        container.innerHTML += `
+          <div class="col-6 col-xl-4">
+            <div class="product-item">
+              <div class="product-image" style="padding-top: 0%;"> 
+                <img src="${v.image}" alt="Voucher Image ${v.id}" class="img-fluid" loading="lazy">
+                <button class="cart-btn" data-id="${v.id}" >Add to Cart</button>
+              </div>
+              <div class="product-info">
+                <div class="product-category">${v.category}</div>
+                <h4 class="product-name" style="font-weight:600;color:black;font-size:larger;line-height:1.3;margin-bottom:8px;">
+                  <a href="voucher-details.html?id=${v.id}">${v.title}</a>
+                </h4>
+                <div class="product-price"><span class="current-price">${v.points} Points</span></div>
+                <div class="btm-btns row g-2">
+                  <div class="col-6">
+                    <a href="voucher-details.html?id=${v.id}" class="btn btn-outline-custom w-100">View Details</a>
+                  </div>
+                  <div class="col-6">
+                    <a href="redeem.html?id=${v.id}" class="btn btn-custom w-100">Redeem Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+
+      // 🔹 Build Pagination
+      buildPagination(total);
+    } catch (err) {
+      console.error("Error loading vouchers:", err);
+    }
+  }
+
+  // Search
+  document.getElementById("productSearch").addEventListener("input", e => {
+    filters.search = e.target.value;
+    loadVouchers();
+  });
+
+  // Category filter
+  document.querySelectorAll(".category-link").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      filters.category = e.target.innerText.trim();
+      let tags = document.querySelector(".active-filters .filter-tags");
+      // remove existing category tag if any
+      let existingCategoryTag = tags.querySelector(".category-tag");
+      if (existingCategoryTag) existingCategoryTag.remove();
+      let existingClearBtn = tags.querySelector(".clear-all-btn");
+      if (existingClearBtn) existingClearBtn.remove();
+      tags.innerHTML += `<span class="filter-tag category-tag">
+                          ${filters.category} <button class="filter-remove"><i class="bi bi-x"></i></button>
+                        </span> <button class="clear-all-btn">Clear All</button>`;
+      loadVouchers();
+      //wait for 500ms
+      setTimeout(() => {
+        // scroll to top of voucher list
+        window.scrollTo({ top: document.querySelector("#voucher-list").offsetTop - 150, behavior: 'smooth' });
+      }, 500);
+    });
+  });
+
+  // Get query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  let categoryParam = urlParams.get("category");
+
+  if (categoryParam) {
+    if (categoryParam === "Food") categoryParam = "Food & Beverage";
+    if (categoryParam === "Health") categoryParam = "Health & Beauty";
+    filters.category = categoryParam;
+    let tags = document.querySelector(".active-filters .filter-tags");
+    // remove existing category tag if any
+    let existingCategoryTag = tags.querySelector(".category-tag");
+    if (existingCategoryTag) existingCategoryTag.remove();
+    let existingClearBtn = tags.querySelector(".clear-all-btn");
+    if (existingClearBtn) existingClearBtn.remove();
+    tags.innerHTML += `<span class="filter-tag category-tag">
+                        ${filters.category} <button class="filter-remove"><i class="bi bi-x"></i></button>
+                      </span> <button class="clear-all-btn">Clear All</button>`;  
+    loadVouchers();
+    //wait for 500ms
+    setTimeout(() => {
+      // scroll to top of voucher list
+      window.scrollTo({ top: document.querySelector("#voucher-list").offsetTop - 150, behavior: 'smooth' });
+    }, 500);
+  }
+
+  // Sort
+  document.getElementById("sortBy").addEventListener("change", e => {
+    let val = e.target.value;
+    if (val.startsWith("Low")) filters.sort = "low";
+    else if (val.startsWith("High")) filters.sort = "high";
+    else if (val.startsWith("Newest")) filters.sort = "new";
+    else filters.sort = "";
+    loadVouchers();
+  });
+
+  // Point filter button
+  document.querySelector(".pricing-range-widget button").addEventListener("click", () => {
+    filters.min_points = document.querySelector(".min-price-input").value || 0;
+    filters.max_points = document.querySelector(".max-price-input").value || 1000;
+    let tags = document.querySelector(".active-filters .filter-tags");
+    // remove existing point tag if any
+    let existingPointTag = tags.querySelector(".point-tag");
+    if (existingPointTag) existingPointTag.remove();
+    let existingClearBtn = tags.querySelector(".clear-all-btn");
+    if (existingClearBtn) existingClearBtn.remove();
+    tags.innerHTML += `<span class="filter-tag point-tag">
+                        ${filters.min_points} to ${filters.max_points} Points <button class="filter-remove"><i class="bi bi-x"></i></button>
+                      </span> <button class="clear-all-btn">Clear All</button>`;
+    loadVouchers();
+    //wait for 500ms
+    setTimeout(() => {
+      // scroll to top of voucher list
+      window.scrollTo({ top: document.querySelector("#voucher-list").offsetTop - 150, behavior: 'smooth' });
+    }, 500);
+  });
+
+  // when clicking on remove button
+  document.addEventListener("click", e => {
+    if (e.target.closest(".filter-remove")) {
+      let tag = e.target.closest(".filter-tag");
+      if (tag.classList.contains("category-tag")) {
+        filters.category = "";
+      } else if (tag.classList.contains("point-tag")) {
+        filters.min_points = 0;
+        filters.max_points = 1000;
+      }
+      tag.remove();
+
+      // if no more tags, remove clear all button
+      let tags = document.querySelector(".active-filters .filter-tags");
+      if (tags.querySelectorAll(".filter-tag").length === 0) {
+        let clearBtn = tags.querySelector(".clear-all-btn");
+        if (clearBtn) clearBtn.remove();
+      }
+
+      loadVouchers();
+    }
+  });
+
+  // Clear all filters
+  document.addEventListener("click", e => {
+    if (e.target.closest(".clear-all-btn")) {
+      filters = {
+        category: "",
+        min_points: 0,
+        max_points: 1000,
+      };
+      document.querySelector(".min-price-input").value = 0;
+      document.querySelector(".max-price-input").value = 500;
+      document.querySelector(".active-filters .filter-tags").innerHTML = "";
+      loadVouchers();
+    }
+  });
+
+  // Items per page
+  document.getElementById("itemsPerPage").addEventListener("change", e => {
+    filters.limit = parseInt(e.target.value);
+    loadVouchers();
+  });
+
+  // Pagination
+  document.addEventListener("click", e => {
+    if (e.target.closest(".page-link")) {
+      e.preventDefault();
+      const page = parseInt(e.target.closest(".page-link").dataset.page);
+      filters.page = page;
+      loadVouchers();
+    }
+
+    if (e.target.closest(".prev-page") && filters.page > 1) {
+      e.preventDefault();
+      filters.page--;
+      loadVouchers();
+    }
+
+    if (e.target.closest(".next-page")) {
+      e.preventDefault();
+      const totalPages = Math.ceil(total / filters.limit);
+      if (filters.page < totalPages) {
+        filters.page++;
+        loadVouchers();
+      }
+    }
+  });
+
+  // Initial load
+  loadVouchers();
+  </script>
+
+  <script>
+    let cartQty = JSON.parse(sessionStorage.getItem("cartCount")) || 0;
+    document.querySelector(".header-action-btn .badge").textContent = cartQty;
+  </script>
+
+
+<script>
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `custom-toast ${type}`;
+      toast.textContent = message;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+document.addEventListener("click", function (event) {
+  if (event.target && event.target.classList.contains("cart-btn")) {
+    const voucherId = event.target.getAttribute("data-id");
+    const quantity = 1;
+
+    if (!voucherId || quantity < 1) {
+      alert("Invalid voucher or quantity.");
+      return;
+    }
+
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    const userId = localUser ? localUser.id : 0;
+
+    fetch("http://localhost/TheGlory/addToCart.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ voucher_id: voucherId, user_id: userId, quantity: quantity })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          sessionStorage.setItem("cartCount", data.totalItems);
+          document.querySelector(".badge").textContent = data.totalItems;
+          showToast("Voucher added to cart!", "success");
+        } else {
+          showToast("Failed to add voucher to cart: " + data.message, "error");
+        }
+      })
+      .catch(error => {
+        console.error("Error adding to cart:", error);
+        showToast("An error occurred while adding to cart.", "error");
+      });
+  }
+});
+
+</script>
 
 </body>
 
