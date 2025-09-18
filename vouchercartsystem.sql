@@ -43,11 +43,11 @@ CREATE TABLE `user` (
 ALTER TABLE `user` MODIFY `password` varchar(255) NULL;
 
 
-
 INSERT INTO `user` VALUES 
-(2,'alice@example.com','alice123','0123456789','hashedpass1',NULL,1,1000,'123 Street, KL','Loves shopping and food deals.','2025-09-08 08:18:55'),
-(4,'muhdfikrizaman@gmail.com','fikri11','01116741728','Fikri11#',NULL,1,NULL,'DT312, Taman Bukit Tambun, Melaka','Loves travel and food deals.','2025-09-08 08:30:11');
-ALTER TABLE `user` ADD COLUMN `firebase_uid` VARCHAR(128) UNIQUE AFTER `id`;
+(2,NULL,'alice@example.com','alice123','0123456789','hashedpass1',NULL,1,1000,'123 Street, KL','Loves shopping and food deals.','2025-09-08 08:18:55'),
+(4,NULL'muhdfikrizaman@gmail.com','fikri11','01116741728','Fikri11#',NULL,1,NULL,'DT312, Taman Bukit Tambun, Melaka','Loves travel and food deals.','2025-09-08 08:30:11');
+
+
 -- ------------------------------
 -- Table structure for `voucher`
 -- ------------------------------
@@ -112,12 +112,12 @@ CREATE TABLE `cartitemhistory` (
 INSERT INTO `cartitemhistory` VALUES 
 (1,1,4,1,'2025-09-08 08:36:04');
 
-CREATE TABLE password_resets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expiry DATETIME NOT NULL,
-    INDEX (email)
+CREATE TABLE `password_resets` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `email` VARCHAR(255) NOT NULL,
+    `token` VARCHAR(255) NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `expiry` DATETIME NOT NULL,
+    INDEX (`email`)
 );
 
