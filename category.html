@@ -622,9 +622,10 @@
       if (existingText) {
         existingText.remove();
       }
-      
-      // Only categorize if user has points (is logged in)
-      if (userPoints > 0) {
+
+      // Only categorize if user is logged in
+      const login = JSON.parse(sessionStorage.getItem("user"));
+      if (login) {
         // Create points indicator
         const pointsIndicator = document.createElement('div');
         pointsIndicator.className = 'points-indicator';
