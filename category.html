@@ -929,7 +929,8 @@
 
     let PointsBalance = JSON.parse(sessionStorage.getItem("user"))?.points || 0;
     document.getElementById("currentPoints").textContent = PointsBalance;
-    if (PointsBalance > 0) document.querySelector(".header-nav-points").style.display = "block"; 
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
+    if (localUser) document.querySelector(".header-nav-points").style.display = "block"; 
     else document.querySelector(".header-nav-points").style.display = "none";
   </script>
 
