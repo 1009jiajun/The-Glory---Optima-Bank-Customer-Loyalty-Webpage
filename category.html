@@ -27,6 +27,83 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+/* Voucher categorization styles */
+    .product-item {
+      position: relative;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .product-item.affordable {
+      border-color: #28a745;
+      background-color: #f8fff9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
+    }
+
+    .product-item.unaffordable {
+      border-color: #dc3545;
+      background-color: #fff8f8;
+      opacity: 0.8;
+    }
+
+    .points-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: bold;
+      z-index: 10;
+      text-transform: uppercase;
+    }
+
+    .points-indicator.sufficient {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .points-indicator.insufficient {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-custom.affordable {
+      background-color: #28a745 !important;
+      border-color: #28a745 !important;
+      color: white !important;
+    }
+
+    .btn-custom.affordable:hover {
+      background-color: #218838 !important;
+      border-color: #1e7e34 !important;
+    }
+
+    .btn-custom.unaffordable {
+      background-color: #dc3545 !important;
+      border-color: #dc3545 !important;
+      color: white !important;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .btn-custom.unaffordable:hover {
+      background-color: #dc3545 !important;
+      border-color: #dc3545 !important;
+    }
+
+    .insufficient-points-text {
+      color: #dc3545;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 
 <body class="index-page">
@@ -494,6 +571,98 @@
     }, 3000);
   }
 
+  // Function to get user points
+  async function getUserPoints() {
+    try {
+      const localUser = JSON.parse(sessionStorage.getItem("user"));
+      if (!localUser || !localUser.id) {
+        return 0;
+      }
+
+      const response = await fetch(`http://localhost/TheGlory/getUserPoints.php?user_id=${localUser.id}`);
+      const data = await response.json();
+      
+      if (data.error) {
+        console.error('Error fetching user points:', data.error);
+        return 0;
+      }
+      
+      return data.points || 0;
+    } catch (error) {
+      console.error('Error fetching user points:', error);
+      return 0;
+    }
+  }
+
+    // Function to categorize vouchers based on user points
+  function categorizeVouchers() {
+    const voucherItems = document.querySelectorAll('.product-item');
+    
+    voucherItems.forEach(item => {
+      const pointsElement = item.querySelector('.current-price');
+      if (!pointsElement) return;
+      
+      const requiredPoints = parseInt(pointsElement.textContent.match(/\d+/)[0]);
+      const redeemBtn = item.querySelector('.btn-custom');
+      
+      // Remove existing classes
+      item.classList.remove('affordable', 'unaffordable');
+      if (redeemBtn) {
+        redeemBtn.classList.remove('affordable', 'unaffordable');
+      }
+      
+      // Remove existing points indicator
+      const existingIndicator = item.querySelector('.points-indicator');
+      if (existingIndicator) {
+        existingIndicator.remove();
+      }
+      
+      // Remove existing insufficient points text
+      const existingText = item.querySelector('.insufficient-points-text');
+      if (existingText) {
+        existingText.remove();
+      }
+      
+      // Only categorize if user has points (is logged in)
+      if (userPoints > 0) {
+        // Create points indicator
+        const pointsIndicator = document.createElement('div');
+        pointsIndicator.className = 'points-indicator';
+        
+        if (userPoints >= requiredPoints) {
+          // User can afford this voucher - Green styling
+          item.classList.add('affordable');
+          if (redeemBtn) {
+            redeemBtn.classList.add('affordable');
+            redeemBtn.disabled = false;
+          }
+          
+          pointsIndicator.classList.add('sufficient');
+          pointsIndicator.textContent = '✓ Available';
+          
+        } else {
+          // User cannot afford this voucher - Red styling
+          item.classList.add('unaffordable');
+          if (redeemBtn) {
+            redeemBtn.classList.add('unaffordable');
+            redeemBtn.disabled = true;
+          }
+          
+          pointsIndicator.classList.add('insufficient');
+          pointsIndicator.textContent = '✗ Need More';
+          
+          // Add insufficient points text
+          const insufficientText = document.createElement('div');
+          insufficientText.className = 'insufficient-points-text';
+          insufficientText.textContent = `Need ${requiredPoints - userPoints} more points`;
+          item.querySelector('.product-info').appendChild(insufficientText);
+        }
+        
+        item.querySelector('.product-image').appendChild(pointsIndicator);
+      }
+    });
+  }
+
   function buildPagination(total) {
     const totalPages = Math.ceil(total / filters.limit);
     const pagination = document.querySelector("#category-pagination nav ul");
@@ -576,6 +745,11 @@
             </div>
           </div>`;
       });
+
+      // Categorize vouchers after loading
+      setTimeout(() => {
+        categorizeVouchers();
+      }, 100);
 
       // 🔹 Build Pagination
       buildPagination(total);
@@ -738,8 +912,14 @@
     }
   });
 
+  // Initialize page
+  async function initializePage() {
+    userPoints = await getUserPoints();
+    loadVouchers();
+  }
+
   // Initial load
-  loadVouchers();
+  initializePage();
   </script>
 
   <script>

@@ -218,7 +218,7 @@
               <div class="availability-status">
                 <div class="stock-indicator">
                   <i class="bi bi-check-circle-fill"></i>
-                  <span class="stock-text">Available</span>
+                  <span class="stock-text">Available Stock</span>
                 </div>
                 <div class="quantity-left">Only 18 items remaining</div>
               </div>
@@ -740,7 +740,7 @@
         document.querySelector(".product-name").textContent = voucher.title;
         document.querySelector(".sale-price").textContent = voucher.points + " points";
         document.querySelector(".product-description p").textContent = voucher.description;
-        document.querySelector(".quantity-left").textContent = "Available"; // you can add stock column later
+        document.querySelector(".quantity-left").textContent = "Available Stock"; // you can add stock column later
 
         // Images
         document.getElementById("main-product-image").src = voucher.image;
