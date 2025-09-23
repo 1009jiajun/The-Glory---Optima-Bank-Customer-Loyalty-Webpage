@@ -173,7 +173,7 @@
               </div>
 
               <div class="checkout-button">
-                <a href="#" class="btn btn-accent w-100" onclick="proceedToRedeem()">
+                <a href="#" class="btn btn-accent w-100 btn-redeem" onclick="proceedToRedeem()">
                   Redeem Now<i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -514,15 +514,19 @@ function updateTotalPoints() {
   let total = 0;
   document.querySelectorAll(".cart-checkbox:checked").forEach(cb => {
     total += parseInt(cb.dataset.subtotal);
+    const localUser = JSON.parse(sessionStorage.getItem("user"));
 
     // Please disable this section if its not working
     // Sections starts here:
       let itemPoints = parseInt(cb.dataset.subtotal);
       if (itemPoints > localUser.points) {
-          cb.disabled = true;
-          const cartItem = cb.closest(".cart-item");
-          cartItem.style.opacity = "0.5";       // make it look greyed out
-          cartItem.style.pointerEvents = "none"; // prevent clicking
+          const redeemBtn = document.querySelector(".btn-redeem");
+          redeemBtn.style.pointerEvents = "none"; // disable button
+          redeemBtn.style.opacity = "0.5";         // make it look greyed out
+      } else{
+          const redeemBtn = document.querySelector(".btn-redeem");
+          redeemBtn.style.pointerEvents = "auto"; // enable button
+          redeemBtn.style.opacity = "1";         // make it look normal
       }
     // Sections ends here
     // By Kai Jun
