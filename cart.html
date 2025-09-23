@@ -514,6 +514,18 @@ function updateTotalPoints() {
   let total = 0;
   document.querySelectorAll(".cart-checkbox:checked").forEach(cb => {
     total += parseInt(cb.dataset.subtotal);
+
+    // Please disable this section if its not working
+    // Sections starts here:
+      let itemPoints = parseInt(cb.dataset.subtotal);
+      if (itemPoints > localUser.points) {
+          cb.disabled = true;
+          const cartItem = cb.closest(".cart-item");
+          cartItem.style.opacity = "0.5";       // make it look greyed out
+          cartItem.style.pointerEvents = "none"; // prevent clicking
+      }
+    // Sections ends here
+    // By Kai Jun
   });
   document.querySelector(".summary-value.final").textContent = total;
   document.querySelector(".summary-value.final2").textContent = total;  
