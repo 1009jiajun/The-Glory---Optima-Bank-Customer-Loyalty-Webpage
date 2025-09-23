@@ -163,12 +163,12 @@
               <h4 class="summary-title">Redemption Summary</h4>
 
               <div class="summary-item">
-                <span class="summary-label" style="font-size: 17px;">My Balance</span>
+                <span class="summary-label" style="font-size: 17px;">My Current Points</span>
                 <span class="summary-value" style="font-size: 17px;"></span>
               </div>
 
               <div class="summary-total">
-                <span class="summary-label">Total Points Used</span>
+                <span class="summary-label">Total Points Needed</span>
                 <span class="summary-value final">0</span>
               </div>
 
@@ -491,7 +491,7 @@ async function loadCart() {
       `;
     });
 
-    html += `<div class="summary-total mt-4"> <span class="summary-label">Total Points Used</span> <span class="summary-value final2"></span> </div>`;
+    html += `<div class="summary-total mt-4"> <span class="summary-label">Total Points Needed</span> <span class="summary-value final2"></span> </div>`;
 
     document.getElementById("cartItems").innerHTML = html;
 

@@ -239,6 +239,13 @@
 
               <ul class="category-tree list-unstyled mb-0">               
 
+                <!-- All Category option -->
+                <li class="category-item">
+                  <div class="d-flex justify-content-between align-items-center category-header">
+                    <a href="#" class="category-link">All Category</a>
+                  </div>
+                </li>
+
                 <!-- Food & Beverages Category (no subcategories) -->
                 <li class="category-item">
                   <div class="d-flex justify-content-between align-items-center category-header">
@@ -769,16 +776,37 @@
   document.querySelectorAll(".category-link").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
-      filters.category = e.target.innerText.trim();
-      let tags = document.querySelector(".active-filters .filter-tags");
-      // remove existing category tag if any
-      let existingCategoryTag = tags.querySelector(".category-tag");
-      if (existingCategoryTag) existingCategoryTag.remove();
-      let existingClearBtn = tags.querySelector(".clear-all-btn");
-      if (existingClearBtn) existingClearBtn.remove();
-      tags.innerHTML += `<span class="filter-tag category-tag">
-                          ${filters.category} <button class="filter-remove"><i class="bi bi-x"></i></button>
-                        </span> <button class="clear-all-btn">Clear All</button>`;
+      const selectedCategory = e.target.innerText.trim();
+      
+      // If "All Category" is selected, clear the category filter
+      if (selectedCategory === "All Category") {
+        filters.category = "";
+        // Remove any existing category tag
+        let tags = document.querySelector(".active-filters .filter-tags");
+        let existingCategoryTag = tags.querySelector(".category-tag");
+        if (existingCategoryTag) existingCategoryTag.remove();
+        let existingClearBtn = tags.querySelector(".clear-all-btn");
+        if (existingClearBtn) existingClearBtn.remove();
+        // Add "All Category" tag if there are other active filters
+        const hasOtherFilters = tags.querySelectorAll(".filter-tag").length > 0;
+        if (hasOtherFilters) {
+          tags.innerHTML += `<span class="filter-tag category-tag">
+                            All Category <button class="filter-remove"><i class="bi bi-x"></i></button>
+                          </span> <button class="clear-all-btn">Clear All</button>`;
+        }
+      } else {
+        filters.category = selectedCategory;
+        let tags = document.querySelector(".active-filters .filter-tags");
+        // remove existing category tag if any
+        let existingCategoryTag = tags.querySelector(".category-tag");
+        if (existingCategoryTag) existingCategoryTag.remove();
+        let existingClearBtn = tags.querySelector(".clear-all-btn");
+        if (existingClearBtn) existingClearBtn.remove();
+        tags.innerHTML += `<span class="filter-tag category-tag">
+                            ${filters.category} <button class="filter-remove"><i class="bi bi-x"></i></button>
+                          </span> <button class="clear-all-btn">Clear All</button>`;
+      }
+      
       loadVouchers();
       //wait for 500ms
       setTimeout(() => {
