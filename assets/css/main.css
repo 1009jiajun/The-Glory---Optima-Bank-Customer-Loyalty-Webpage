@@ -7750,6 +7750,16 @@ section,
   background-color: color-mix(in srgb, var(--accent-color), transparent 88%);
 }
 
+.account .content-area .orders-grid .order-card .order-footer button.btn-download {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 92%);
+  color: var(--accent-color);
+  border: none;
+}
+
+.account .content-area .orders-grid .order-card .order-footer button.btn-download:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+
 .account .content-area .orders-grid .order-card .order-footer button.btn-review {
   background-color: #f0fdf4;
   color: #22c55e;
