@@ -127,6 +127,177 @@
     font-weight: bold;
     margin-top: 5px;
   }
+
+  #chatbot-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    width: 62px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    z-index: 999;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  #chatbot-button:hover {
+    box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    transform: scale(1.08);
+    background: #222;
+  }
+
+    #chatbot-window {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 360px;
+      height: 550px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    #chatbot-header {
+      background: #000;
+      color: white;
+      padding: 12px;
+      border-radius: 12px 12px 0 0;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #chatbot-close {
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chat-bubble {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      line-height: 1.4;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+
+    .user-bubble {
+      background: #000;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bot-bubble {
+      background: #f1f1f1;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 8px 14px;
+      background: #f1f1f1;
+      border-radius: 16px;
+      width: fit-content;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .typing-indicator span {
+      width: 6px;
+      height: 6px;
+      background: #888;
+      border-radius: 50%;
+      display: inline-block;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #chatbot-input-area {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    #chatbot-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    #chatbot-input:focus {
+      border-color: #000;
+    }
+
+    #chatbot-send {
+      margin-left: 8px;
+      padding: 10px 16px;
+      border: none;
+      background: #000;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    #chatbot-send:hover {
+      background: #000;
+    }
   </style>
 
 </head>
@@ -1044,8 +1215,116 @@ document.addEventListener("click", function(event) {
     }
   });
 });
+
 </script>
 
+<div id="chatbot-button">
+  <!-- Bubble icon with three dots using Bootstrap Icons -->
+  <i class="bi bi-chat-dots"></i>
+</div>
+  <!-- Chatbot Window -->
+  <div id="chatbot-window">
+    <div id="chatbot-header">
+      Optima Bot
+      <span id="chatbot-close">✖</span>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask about vouchers or services..." />
+      <button id="chatbot-send">➤</button>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const button = document.getElementById("chatbot-button");
+      const windowEl = document.getElementById("chatbot-window");
+      const closeBtn = document.getElementById("chatbot-close");
+      const input = document.getElementById("chatbot-input");
+      const sendBtn = document.getElementById("chatbot-send");
+      const messages = document.getElementById("chatbot-messages");
+
+      // Toggle chatbot
+      button.addEventListener("click", () => {
+        windowEl.style.display = "flex";
+        // Show greeting on open
+        if (messages.children.length === 0) {
+          appendMessage("bot", "Hi there! I'm the Optima Bank Bot. I can help you with questions about loyalty points, vouchers, or our bank services.");
+        }
+      });
+      closeBtn.addEventListener("click", () => {
+        windowEl.style.display = "none";
+      });
+
+      // Append message
+      function appendMessage(sender, text) {
+        const msg = document.createElement("div");
+        msg.classList.add("chat-bubble", sender === "bot" ? "bot-bubble" : "user-bubble");
+
+        // Format bot messages
+        if (sender === "bot") {
+          text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+          text = text.replace(/\* (.*?)(\n|$)/g, "• $1<br>");
+          text = text.replace(/\n/g, "<br>");
+          msg.innerHTML = text;
+        } else {
+          msg.textContent = text;
+        }
+
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      // Add typing indicator
+      function showTyping() {
+        const typing = document.createElement("div");
+        typing.classList.add("typing-indicator");
+        typing.innerHTML = "<span></span><span></span><span></span>";
+        typing.id = "typing";
+        messages.appendChild(typing);
+        messages.scrollTop = messages.scrollHeight;
+      }
+      function removeTyping() {
+        const typing = document.getElementById("typing");
+        if (typing) typing.remove();
+      }
+
+      // Send message
+      function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+        appendMessage("user", text);
+        input.value = "";
+
+        // Check greetings
+        const greetings = ["hi", "hello", "hey", "good morning", "good afternoon"];
+        if (greetings.some(g => text.toLowerCase().trim() === g)) {
+          appendMessage("bot", "Hi there! I'm the Optima Bank Bot. I can help you with questions about loyalty points, vouchers, or our bank services.");
+          return;
+        }
+
+        showTyping();
+
+        fetch("chatbot.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        })
+          .then(res => res.json())
+          .then(data => {
+            removeTyping();
+            appendMessage("bot", data.reply || "Sorry, I didn’t understand that.");
+          })
+          .catch(() => {
+            removeTyping();
+            appendMessage("bot", "⚠️ Error connecting to chatbot.");
+          });
+      }
+      sendBtn.addEventListener("click", sendMessage);
+      input.addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage();
+      });
+    });
+  </script>
 </body>
 
 </html>
