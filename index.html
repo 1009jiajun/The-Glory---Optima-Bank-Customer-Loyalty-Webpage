@@ -1304,10 +1304,15 @@ document.addEventListener("click", function(event) {
 
         showTyping();
 
+        const localUser = JSON.parse(sessionStorage.getItem("user") || "null");
+        const userId = localUser && localUser.id ? localUser.id : 0;
+        const payload = { message: text };
+        if (userId > 0) payload.user_id = userId;
+
        fetch("chatbot.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify(payload)
       })
         .then(async res => {
           const raw = await res.text(); // read as text first
