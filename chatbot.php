@@ -20,7 +20,7 @@ if (empty($userMessage)) {
 }
 
 require_once "config.php";
-$apiKey = CHATGPT_API_KEY;
+$apiKey = GEMINI_API_KEY;
 // ✅ Gemini API request setup
 $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . $apiKey;
 
