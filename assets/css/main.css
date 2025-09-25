@@ -7780,6 +7780,29 @@ section,
   background-color: #fee2e2;
 }
 
+.order-footer {
+  display: flex;
+  justify-content: flex-start; /* or space-between */
+  gap: 10px; /* spacing between buttons */
+  flex-wrap: wrap; /* allow wrapping when needed */
+}
+
+.order-footer button {
+  flex: 1; /* both take equal width if stacked */
+  min-width: 150px; /* control minimum size */
+}
+
+@media (max-width: 576px) {
+  .order-footer {
+    flex-direction: column; /* stack vertically */
+  }
+
+  .order-footer button {
+    width: 100%; /* take full row */
+  }
+}
+
+
 .account .content-area .pagination-wrapper {
   display: flex;
   align-items: center;
