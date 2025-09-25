@@ -30,3 +30,4 @@ yarn-error.log*
 
 # Ignore Firebase config
 config.js
+config.php
