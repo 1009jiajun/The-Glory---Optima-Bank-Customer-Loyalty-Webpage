@@ -1304,20 +1304,26 @@ document.addEventListener("click", function(event) {
 
         showTyping();
 
-        fetch("chatbot.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
+       fetch("chatbot.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      })
+        .then(async res => {
+          const raw = await res.text(); // read as text first
+          console.log("RAW RESPONSE:", raw); // check what PHP really returned
+          return JSON.parse(raw); // then parse manually
         })
-          .then(res => res.json())
-          .then(data => {
-            removeTyping();
-            appendMessage("bot", data.reply || "Sorry, I didn’t understand that.");
-          })
-          .catch(() => {
-            removeTyping();
-            appendMessage("bot", "⚠️ Error connecting to chatbot.");
-          });
+        .then(data => {
+          removeTyping();
+          appendMessage("bot", data.reply || "Sorry, I didn’t understand that.");
+        })
+        .catch(err => {
+          removeTyping();
+          console.error("Fetch error:", err);
+          appendMessage("bot", "⚠️ Error connecting to chatbot.");
+        });
+
       }
       sendBtn.addEventListener("click", sendMessage);
       input.addEventListener("keypress", e => {

@@ -1,8 +1,10 @@
 <?php
-// ai_chatbot.php (Improved Version)
-session_start();
-
+ob_clean(); // clear accidental output
+error_reporting(0); // suppress notices/warnings
 header('Content-Type: application/json');
+
+// chatbot.php (Improved Version)
+session_start();
 
 // ✅ Validate request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -68,19 +70,22 @@ curl_setopt_array($ch, [
 
 $response = curl_exec($ch);
 
-if (curl_errno($ch)) {
-    echo json_encode(["reply" => "Error connecting to AI service. Please try again later."]);
+if ($response === false) {
+    $errorMsg = curl_error($ch);
     curl_close($ch);
+    echo json_encode(["reply" => "Error: " . $errorMsg]);
     exit;
 }
 
 curl_close($ch);
-
 $data = json_decode($response, true);
 
-// ✅ Better error fallback
-$reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? "Sorry, I can only help with voucher redemption and Optima Bank services.";
+if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+    $reply = "AI service returned an unexpected response.";
+} else {
+    $reply = $data['candidates'][0]['content']['parts'][0]['text'];
+}
 
-// ✅ Send JSON response
 echo json_encode(["reply" => $reply], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 ?>
