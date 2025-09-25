@@ -20,7 +20,7 @@ if (empty($userMessage)) {
 }
 
 // ✅ Gemini API request setup
-$apiKey = "AIzaSyAHXQJEHfD7aYvcSGFsZK5thZl7LVcVdjs"; // Better security: use environment variable
+$apiKey = "Put API key"; // Better security: use environment variable
 $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . $apiKey;
 
 $payload = [
