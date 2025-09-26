@@ -4,6 +4,4 @@
 
 # 2. Change the directory name in code based your own local project name like e.g. fetch("http://localhost/TheGlory/resetPassword.php"), u need to change 'TheGlory' into yours local folder name.
 
-# 3. Make sure run the latest database sql. 
-
-#4. yes i do it.
+# 3. Make sure run the latest database sql.
