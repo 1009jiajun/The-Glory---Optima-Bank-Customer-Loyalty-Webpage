@@ -1248,7 +1248,10 @@ document.addEventListener("click", function(event) {
         windowEl.style.display = "flex";
         // Show greeting on open
         if (messages.children.length === 0) {
-          appendMessage("bot", "Hi there! I'm the Optima Bank Bot. I can help you with questions about loyalty points, vouchers, or our bank services.");
+          appendMessage("bot", "Hi there! I'm the Optima Bank Bot. I can help you with questions about loyalty points, vouchers, or our bank services.\n\nReply '1' for loyalty points.\nReply '2' for vouchers.\nReply '3' for account help.");
+        }
+        if (messages.children.length === 1) {
+         appendMessage("bot", "Feel free to ask me anything else!" );
         }
       });
       closeBtn.addEventListener("click", () => {
@@ -1299,6 +1302,18 @@ document.addEventListener("click", function(event) {
         const greetings = ["hi", "hello", "hey", "good morning", "good afternoon"];
         if (greetings.some(g => text.toLowerCase().trim() === g)) {
           appendMessage("bot", "Hi there! I'm the Optima Bank Bot. I can help you with questions about loyalty points, vouchers, or our bank services.");
+          return;
+        }
+
+        // check the user reply matching the 1,2,3 options
+        if (text === "1") {
+          appendMessage("bot", "**Loyalty Points Information:**\n* Earn points from Optima Bank activities.\n* Redeem points for exclusive vouchers.\n* Check your points balance in your account.");
+          return;
+        } else if (text === "2") {
+          appendMessage("bot", "**Voucher Information:**\n* Browse vouchers by category on our homepage.\n* Redeem vouchers using your loyalty points.\n* View voucher details for terms and conditions.");
+          return;
+        } else if (text === "3") {
+          appendMessage("bot", "**Account Help:**\n* Sign in to access your account and view points.\n* Update your profile and contact information.\n* Contact support for any account-related issues.");
           return;
         }
 
